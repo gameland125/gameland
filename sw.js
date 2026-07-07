@@ -1,6 +1,6 @@
-self.addEventListener('install', e => {
+self.addEventListener('install', function(e) {
   e.waitUntil(
-    caches.open('ps4-cache').then(cache => {
+    caches.open('ps4-host').then(function(cache) {
       return cache.addAll([
         '/',
         '/index.html',
@@ -9,11 +9,5 @@ self.addEventListener('install', e => {
         '/payloads/goldhen.bin'
       ]);
     })
-  );
-});
-
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(res => res || fetch(e.request))
   );
 });
