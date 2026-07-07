@@ -1,5 +1,37 @@
-<!-- auto.html -->
-<script src="loader.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Auto GoldHEN</title>
+</head>
+
+<body style="background:black;color:white;text-align:center">
+
+<h2>Loading Exploit...</h2>
+
 <script>
-loadPayload("payloads/goldhen.bin");
+
+// شبیه ps4idea (auto chain)
+async function run() {
+  try {
+    let res = await fetch("payloads/goldhen.bin");
+    let buf = await res.arrayBuffer();
+
+    console.log("GoldHEN Loaded");
+
+    // اینجا در هاست واقعی inject انجام میشه
+    // (در نسخه ساده فقط تست لود هست)
+
+    document.body.innerHTML = "<h2>Payload Loaded (Need Real Exploit)</h2>";
+
+  } catch(e) {
+    alert("Error: " + e);
+  }
+}
+
+run();
+
 </script>
+
+</body>
+</html>
