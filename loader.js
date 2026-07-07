@@ -1,19 +1,15 @@
-function load_goldhen(){
-    var req = new XMLHttpRequest();
-    req.open('GET', 'goldhen.bin');
-    req.responseType = "arraybuffer";
+function load_goldhen() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'goldhen.bin', true);
+    xhr.responseType = 'arraybuffer';
 
-    req.onload = function() {
-        if (req.status === 200) {
-            var payload = new Uint8Array(req.response);
-            console.log("GoldHEN loaded, size:", payload.length);
-
-            // fake trigger (placeholder)
-            alert("GoldHEN Loaded Successfully!");
-        } else {
-            alert("Failed to load goldhen.bin");
-        }
+    xhr.onload = function() {
+        var payload = new Uint8Array(xhr.response);
+        runPayload(payload);
     };
 
-    req.send();
+    xhr.send();
 }
+
+// اجرا خودکار
+setTimeout(load_goldhen, 3000);
