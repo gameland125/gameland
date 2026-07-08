@@ -8,15 +8,17 @@
 
 <h3>Loading GoldHEN...</h3>
 
-<script src="exploit/exploit.js"></script>
-<script src="exploit/loader.js"></script>
-<script src="exploit/rop.js"></script>
-<script src="exploit/syscalls.js"></script>
+<script src="/exploit/exploit.js"></script>
+<script src="/exploit/rop.js"></script>
+<script src="/exploit/syscalls.js"></script>
+<script src="/exploit/loader.js"></script>
 
 <script>
-setTimeout(function(){
-    loadPayload("payloads/goldhen.bin");
-}, 3000);
+window.onload = function() {
+    setTimeout(function(){
+        loadPayload("/payloads/goldhen.bin");
+    }, 4000);
+};
 </script>
 
 </body>
