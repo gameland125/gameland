@@ -1,29 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Auto GoldHEN</title>
-</head>
-<body>
-
-<h3>Loading...</h3>
-
-<script src="/exploit/exploit.js"></script>
-<script src="/exploit/rop.js"></script>
-<script src="/exploit/syscalls.js"></script>
-<script src="/exploit/loader.js"></script>
-
 <script>
-function waitExploit() {
-    if (typeof window.runPayload === "function") {
-        console.log("Exploit Ready");
-        loadPayload("/payloads/goldhen.bin");
-    } else {
-        setTimeout(waitExploit, 1000);
-    }
+window.onload = function(){
+    loadPayload();
 }
-waitExploit();
 </script>
-
-</body>
-</html>
