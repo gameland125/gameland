@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h3>Loading GoldHEN...</h3>
+<h3>Loading...</h3>
 
 <script src="/exploit/exploit.js"></script>
 <script src="/exploit/rop.js"></script>
@@ -14,11 +14,15 @@
 <script src="/exploit/loader.js"></script>
 
 <script>
-window.onload = function() {
-    setTimeout(function(){
+function waitExploit() {
+    if (typeof window.runPayload === "function") {
+        console.log("Exploit Ready");
         loadPayload("/payloads/goldhen.bin");
-    }, 4000);
-};
+    } else {
+        setTimeout(waitExploit, 1000);
+    }
+}
+waitExploit();
 </script>
 
 </body>
