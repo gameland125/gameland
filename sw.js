@@ -6,7 +6,11 @@ self.addEventListener('install', e => {
         '/index.html',
         '/auto.html',
         '/offline.html',
-        '/payloads/goldhen.bin'
+        '/payloads/goldhen.bin',
+        '/exploit/exploit.js',
+        '/exploit/loader.js',
+        '/exploit/rop.js',
+        '/exploit/syscalls.js'
       ]);
     })
   );
