@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><title>GameLand REAL</title></head>
-<body style="background:black;color:white;text-align:center;">
-<h1>GameLand PS4 REAL HOST</h1>
-<script type="module">
-import('./psfree.mjs').then(m=>{
-    setTimeout(()=>{ m.run_psfree && m.run_psfree(); },500);
-});
+<head>
+<meta charset="utf-8">
+<title>PS4 Auto Host</title>
+</head>
+<body>
+
+<h2>PS4 Auto GoldHen Host</h2>
+
+<button onclick="run()">Run GoldHen</button>
+
+<script src="exploit/exploit.js"></script>
+<script src="exploit/loader.js"></script>
+
+<script>
+function run(){
+    loadPayload("payloads/goldhen.bin");
+}
 </script>
-</body></html>
+
+</body>
+</html>
