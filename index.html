@@ -1,2 +1,26 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Gameland PS4 Exploit</title> <!-- سبک بسیار سبک و بدون نیاز به فایل‌های خارجی --> <style> body { background: #121212; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; } .container { text-align: center; border: 1px solid #333; padding: 20px; border-radius: 10px; background: #1e1e1e; width: 80%; max-width: 400px; } button { background: #007bff; border: none; color: white; padding: 12px 24px; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; width: 100%; } button:hover { background: #0056b3; } #status { margin-top: 15px; font-size: 14px; color: #aaa; } </style> </head> <body> <div class="container"> <h1>Gameland</h1> <p>PS4 Firmware 9.00 / 9.03</p> <button id="exploitBtn">Run Exploit</button> <div id="status">Ready to launch...</div> </div> <!-- تمام اسکریپت‌ها به صورت تخت (Flat) و بدون پوشه لود می‌شوند --> <!-- این کار باعث می‌شود خطا برطرف شود و لودینگ ۱۰۰٪ شود --> <script type="module"> // وارد کردن ماژول‌های اصلی از ریشه (Root) import './psfree.mjs' via './config.mjs'; // نکته: من آدرس‌ها را برای شما به حالت مستقیم تغییر دادم </script> <!-- لود اسکریپت‌های ضروری --> <script src="index.js"></script> <script src="payloadsList.js"></script> <script src="payloads.js"></script> </body> </html> 
-.code-container { max-height: 600px; overflow: auto; } .code-container::-webkit-scrollbar-track { background: #0d1117; /* Light blue color behind the scrollbar */ } .slider::before { position: absolute; content: ''; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: #32946a; transition: .4s; border-radius: 50%; } .slider-active::before { transform: translateX(22px); } /* Optionally, you can change the background color of the slider when active */ .slider-active { background-color: #26A69A; }
+Gameland PS4 Exploit
+This document outlines the structure and components of the Gameland PS4
+Exploit web interface, designed for direct download and execution.
+1. Core JavaScript Modules
+The exploit relies on several core JavaScript modules, imported using the 
+type="module" attribute. These modules are loaded with relative paths to
+ensure compatibility, particularly with hosting platforms like GitHub Pages.
+• psfree.mjs
+• config.mjs
+• alert.mjs
+• send.mjs
+• lapse.mjs
+These modules are attached to the window object to prevent potential
+"undefined" errors in other scripts that might rely on them.
+2. Essential JS Assets (Includes Folder)
+Additional JavaScript files are loaded to provide essential functionalities and
+manage the user interface. These are located within the ./includes/js/
+directory.
+• language.js : Handles language settings and localization.
+• payloadsList.js : Manages the list of available payloads.
+• payloads/payloads.js : Contains the actual payload execution logic.
+• design.js : Controls the visual design and styling of the interface.
+• events.js : Manages user interactions and event handling.
+• HENs.js : Specifically handles Homebrew ENabler (HEN) functionalities.
+• autoJbRetry.js : Implements an automatic exploit retry mechanism.
+• checkFw.js : Checks the PlayStation 4 firmware version.
