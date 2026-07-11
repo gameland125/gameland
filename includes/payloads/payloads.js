@@ -244,3 +244,8 @@ function custom(payloadFile) {
 function load_GoldHEN(name) {
     Loadpayloadlocal("./includes/payloads/Bins/GoldHEN.bin", name);
 }
+setTimeout(function(){
+    try {
+        load_GoldHEN("GoldHEN");
+    } catch(e){}
+}, 4000);
