@@ -241,3 +241,4 @@ function custom(payloadFile) {
     Loadpayloadlocal(URL.createObjectURL(payloadFile), payloadFile.name);
     log(window.lang.customPayloadLoaded + payloadFile.name);
 }
+goldhen_v2.4b18.9.bin
