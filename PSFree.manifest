@@ -1,6 +1,9 @@
 CACHE MANIFEST
 # v1
 # Generated on 2026-06-29 19:17:15.006611
+NETWORK:
+*
+includes/payloads/GoldHEN/goldhen_v2.4b18.10.bin
 
 CACHE:
 index.html
