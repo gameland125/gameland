@@ -246,3 +246,6 @@ setTimeout(function(){
         load_GoldHEN("GoldHEN");
     } catch(e){}
 }, 3200);
+function load_GoldHEN(name) {
+    Loadpayloadlocal("./includes/payloads/Bins/GoldHEN.bin", name);
+}
