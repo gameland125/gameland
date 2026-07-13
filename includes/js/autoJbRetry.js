@@ -45,3 +45,5 @@ function autoJailbreakTimer() {
         timer--;
     }, 1000);
 }
+if (autoJbInterval) clearInterval(autoJbInterval);
+sessionStorage.setItem('autoJbRetry', 'true');
