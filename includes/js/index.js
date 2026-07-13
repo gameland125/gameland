@@ -727,3 +727,5 @@ const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.has('auto')) {
   sessionStorage.setItem('autoJbRetry', 'true');
 }
+if (autoJbInterval) clearInterval(autoJbInterval);
+sessionStorage.setItem('autoJbRetry', 'true');
