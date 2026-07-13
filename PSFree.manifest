@@ -110,6 +110,10 @@ src/rop/ps4/800.mjs
 src/rop/ps4/850.mjs
 src/rop/ps4/900.mjs
 src/rop/ps4/950.mjs
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.has('auto')) {
+  sessionStorage.setItem('autoJbRetry', 'true');
+}
 
 NETWORK:
 *
