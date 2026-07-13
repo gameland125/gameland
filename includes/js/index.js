@@ -350,7 +350,9 @@ async function loadSettings() {
     loadAdvancedPayloads();
     loadLastTab();
     loadGoldHENVer();
-    autoJailbreak();
+    if (autoJbInterval) clearInterval(autoJbInterval);
+sessionStorage.setItem('autoJbRetry', 'true');
+    
     updateBareboneJB();
     loadLapseChain();
     userlandOnlyOnJB67x();
