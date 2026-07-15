@@ -1,11 +1,12 @@
 {
   "name": "GAMELAND",
   "short_name": "GAMELAND",
+  "description": "درگاه آفلاین گیم‌لند",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#2f3b4a",
-  "theme_color": "#2f3b4a",
+  "background_color": "#25282c",
+  "theme_color": "#25282c",
   "icons": [
     {
       "src": "./icon-192.png",
