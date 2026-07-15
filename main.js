@@ -1,19 +1,37 @@
-// Auto-Trigger logic
-window.onload = async () => {
-    try {
-        const status = document.getElementById('status');
-        // فراخوانی متد اکسپلویت
-        await runExploit(); 
-        status.innerText = "GoldHEN فعال شد.";
-        // بازگشت به منوی بازی (شبیه‌سازی شده)
-        setTimeout(() => window.location.href = "about:blank", 2000);
-    } catch (e) {
-        document.getElementById('status').innerText = "خطا: " + e.message;
-        document.getElementById('restart-btn').style.display = "block";
-    }
-};
+const statusEl = document.getElementById('status');
+const restartBtn = document.getElementById('restartBtn');
 
-// ساده‌سازی اجرای payload از پوشه hen
-async function runExploit() {
-    // منطق تزریق HEN اینجا قرار می‌گیرد
+function setStatus(msg) {
+  statusEl.textContent = msg;
 }
+
+function showRestart() {
+  restartBtn.classList.remove('hidden');
+}
+
+restartBtn.addEventListener('click', () => {
+  location.reload();
+});
+
+async function boot() {
+  try {
+    setStatus('در حال بارگذاری...');
+    
+    if ('serviceWorker' in navigator) {
+      try {
+        await navigator.serviceWorker.register('./service-worker.js');
+      } catch (e) {}
+    }
+
+    setStatus('آماده اجرا.');
+
+    // اگر بعداً فایل/منطق خاصی در /hen گذاشتی،
+    // اینجا می‌توانی لود یا فراخوانی‌اش کنی.
+
+  } catch (err) {
+    setStatus('خطا در اجرا: ' + err.message);
+    showRestart();
+  }
+}
+
+window.addEventListener('load', boot);
