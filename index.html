@@ -1,21 +1,59 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#25282c">
-  <title>Gameland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#5a5a5a">
+  <meta name="description" content="Gameland — PWA offline-first, lightweight and professional">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Gameland">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <link rel="icon" type="image/png" href="./icon-192.png" sizes="192x192">
-  <link rel="icon" type="image/png" href="./icon-512.png" sizes="512x512">
+  <title>GAMELAND</title>
   <link rel="stylesheet" href="./style.css">
-  <meta name="description" content="گیم‌لند: ابزار مدیریت و بهینه‌سازی تجربه بازی برای پلی‌استیشن.">
 </head>
 <body>
-  <div class="header">
-    <span class="brand">
-      <span class="eyebrow">
-        <span class="badge online" id="network-badge">آنلاین</span>
-        <span class="firmware">PS4
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="brand-title">GAMELAND</div>
+        <div class="brand-subtitle">Powered by Qassem Akbarzadeh</div>
+        <div class="brand-meta">کاشمر، خیابان ترابی ۱۵</div>
+        <div class="brand-meta">09364229748</div>
+      </div>
+      <div id="jbStatus" class="status-pill" aria-live="polite">Ready</div>
+    </header>
+
+    <section class="hero">
+      <h1>GAMELAND</h1>
+      <p>
+        نسخه‌ی سبک، آفلاین و قابل‌نصب برای اجرای سریع در GitHub Pages.
+      </p>
+      <div class="actions">
+        <button id="installBtn" type="button">Install App</button>
+        <button id="refreshBtn" type="button">Refresh Cache</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Offline Ready</h2>
+      <p id="loader-msg">Preparing app shell...</p>
+      <div class="loader" aria-hidden="true"></div>
+    </section>
+
+    <section class="card muted">
+      <h2>About</h2>
+      <p>
+        This build is a clean PWA shell with cache-first offline support and minimal footprint.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Gameland — All rights reserved.</p>
+  </footer>
+
+  <script src="./main.js" defer></script>
+</body>
+</html>
