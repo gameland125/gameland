@@ -1,14 +1,12 @@
 {
   "name": "GAMELAND",
   "short_name": "GAMELAND",
-  "description": "GAMELAND — برنامه عمومی، امن و آفلاین",
+  "description": "درگاه آفلاین گیم‌لند برای مدیریت فایل‌های محلی روی PS4",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#24262a",
-  "theme_color": "#24262a",
-  "dir": "rtl",
-  "lang": "fa",
+  "background_color": "#25282c",
+  "theme_color": "#25282c",
   "icons": [
     {
       "src": "./icon-192.png",
