@@ -1,1 +1,32 @@
+{
+  "app": {
+    "name": "GAMELAND",
+    "version": "1.0.0",
+    "theme": "gray",
+    "language": "fa"
+  },
 
+  "branding": {
+    "title": "GAMELAND",
+    "subtitle": "Powered by Qassem Akbarzadeh",
+    "address": "کاشمر، خیابان ترابی ۱۵",
+    "phone": "09364229748"
+  },
+
+  "ui": {
+    "showFooter": true,
+    "showVersion": true,
+    "showStatus": true,
+    "animations": true
+  },
+
+  "offline": {
+    "enabled": true,
+    "cacheName": "gameland-cache-v1"
+  },
+
+  "payloads": {
+    "folder": "payloads",
+    "placeholder": true
+  }
+}
