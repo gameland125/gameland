@@ -1,102 +1,111 @@
-const ui = {
-  jbStatus: document.getElementById('jbStatus'),
-  modeSelect: document.getElementById('modeSelect'),
-  langSelect: document.getElementById('langSelect'),
-  startBtn: document.getElementById('startBtn'),
-  retryBtn: document.getElementById('retryBtn'),
-  loaderBox: document.getElementById('loaderBox'),
-  loaderMsg: document.getElementById('loader-msg'),
-  body: document.body
-};
+(() => {
+  'use strict';
 
-const state = {
-  mode: localStorage.getItem('gamelandMode') || 'classic',
-  lang: localStorage.getItem('gamelandLang') || 'fa'
-};
+  const $ = (id) => document.getElementById(id);
 
-const texts = {
-  fa: {
-    ready: 'آماده',
-    loading: 'در حال بارگذاری...',
-    success: 'بارگذاری با موفقیت انجام شد',
-    failure: 'خطا در بارگذاری',
-    retry: 'بازآغاز'
-  },
-  en: {
-    ready: 'Ready',
-    loading: 'Loading...',
-    success: 'Loaded successfully',
-    failure: 'Load failed',
-    retry: 'Restart'
+  const state = {
+    online: navigator.onLine,
+    progress: 0,
+  };
+
+  function setStatus(text) {
+    const el = $('status-text');
+    if (el) el.textContent = text;
   }
-};
 
-function applyMode(mode) {
-  state.mode = mode;
-  localStorage.setItem('gamelandMode', mode);
-  ui.body.dataset.mode = mode;
-}
+  function setBadge(text, online) {
+    const el = $('network-badge');
+    if (!el) return;
+    el.textContent = text;
+    el.classList.toggle('online', !!online);
+    el.classList.toggle('offline', !online);
+  }
 
-function applyLanguage(lang) {
-  state.lang = lang;
-  localStorage.setItem('gamelandLang', lang);
-  ui.body.lang = lang;
-  ui.jbStatus.textContent = texts[lang].ready;
-  ui.loaderMsg.textContent = texts[lang].loading;
-  ui.retryBtn.textContent = texts[lang].retry;
-}
+  function setProgress(value) {
+    const bar = $('progress-bar');
+    if (!bar) return;
+    bar.style.width = `${Math.max(0, Math.min(100, value))}%`;
+  }
 
-function showLoader() {
-  ui.loaderBox.hidden = false;
-}
+  function bootAnimation() {
+    state.progress = 0;
+    setProgress(0);
 
-function hideLoader() {
-  ui.loaderBox.hidden = true;
-}
+    const timer = setInterval(() => {
+      state.progress += 8;
+      setProgress(state.progress);
 
-function simulateStart() {
-  ui.jbStatus.textContent = texts[state.lang].loading;
-  showLoader();
-  ui.loaderMsg.textContent = texts[state.lang].loading;
+      if (state.progress >= 100) {
+        clearInterval(timer);
+        setStatus('سامانه آماده است.');
+      } else if (state.progress < 30) {
+        setStatus('در حال آماده‌سازی رابط...');
+      } else if (state.progress < 70) {
+        setStatus('در حال بررسی منابع محلی...');
+      } else {
+        setStatus('در حال نهایی‌سازی...');
+      }
+    }, 120);
+  }
 
-  window.setTimeout(() => {
-    ui.loaderMsg.textContent = texts[state.lang].success;
-    ui.jbStatus.textContent = texts[state.lang].success;
+  function updateNetwork() {
+    const online = navigator.onLine;
+    state.online = online;
 
-    window.setTimeout(() => {
-      hideLoader();
-      ui.jbStatus.textContent = texts[state.lang].ready;
-    }, 1200);
-  }, 1800);
-}
+    if (online) {
+      setBadge('آنلاین', true);
+      setStatus('اتصال برقرار است. PWA آماده استفاده است.');
+    } else {
+      setBadge('آفلاین', false);
+      setStatus('حالت آفلاین فعال است. داده‌ها از کش خوانده می‌شوند.');
+    }
+  }
 
-function restartApp() {
-  localStorage.removeItem('gamelandMode');
-  localStorage.removeItem('gamelandLang');
-  window.location.reload();
-}
+  function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) return;
 
-ui.modeSelect.value = state.mode;
-ui.langSelect.value = state.lang;
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js', { scope: './' })
+        .then((reg) => {
+          console.log('[GAMELAND] SW registered:', reg.scope);
+        })
+        .catch((err) => {
+          console.error('[GAMELAND] SW registration failed:', err);
+        });
+    });
+  }
 
-applyMode(state.mode);
-applyLanguage(state.lang);
+  function bindEvents() {
+    window.addEventListener('online', updateNetwork);
+    window.addEventListener('offline', updateNetwork);
 
-ui.modeSelect.addEventListener('change', (e) => {
-  applyMode(e.target.value);
-});
+    const checkBtn = $('check-button');
+    if (checkBtn) {
+      checkBtn.addEventListener('click', () => {
+        updateNetwork();
+        bootAnimation();
+      });
+    }
 
-ui.langSelect.addEventListener('change', (e) => {
-  applyLanguage(e.target.value);
-});
+    const restartBtn = $('restart-button');
+    if (restartBtn) {
+      restartBtn.addEventListener('click', () => {
+        window.location.reload();
+      });
+    }
+  }
 
-ui.startBtn.addEventListener('click', simulateStart);
-ui.retryBtn.addEventListener('click', restartApp);
+  function init() {
+    updateNetwork();
+    bindEvents();
+    registerServiceWorker();
+    bootAnimation();
+    console.log('[GAMELAND] PWA loaded');
+  }
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js').catch(() => {
-    ui.jbStatus.textContent = state.lang === 'fa'
-      ? 'ثبت Service Worker ناموفق بود'
-      : 'Service Worker registration failed';
-  });
-}
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+})();
