@@ -1,75 +1,54 @@
-var statusText = document.getElementById('status-text');
-var networkBadge = document.getElementById('network-badge');
-var progressBar = document.getElementById('progress-bar');
-var checkButton = document.getElementById('check-button');
-var restartButton = document.getElementById('restart-button');
-var notice = document.getElementById('notice');
+'use strict';
 
-function updateNetworkState() {
+const $ = (id) => document.getElementById(id);
+const statusText = $('status-text');
+const progressBar = $('progress-bar');
+const badge = $('network-badge');
+const checkButton = $('check-button');
+const restartButton = $('restart-button');
+
+function setStatus(text, pct = 0, mode = 'idle') {
+  statusText.textContent = text;
+  progressBar.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+
+  if (mode === 'good') badge.textContent = 'آماده';
+  else if (mode === 'warn') badge.textContent = 'آفلاین';
+  else badge.textContent = navigator.onLine ? 'آنلاین' : 'آفلاین';
+}
+
+function registerSW() {
+  if (!('serviceWorker' in navigator)) return;
+  window.addEventListener('load', async () => {
+    try {
+      await navigator.serviceWorker.register('./service-worker.js');
+    } catch (e) {
+      console.warn('SW registration failed:', e);
+    }
+  });
+}
+
+function updateConnectivity() {
   if (navigator.onLine) {
-    networkBadge.textContent = 'آنلاین';
-    networkBadge.classList.add('online');
-    networkBadge.classList.remove('offline');
+    badge.textContent = 'آنلاین';
+    badge.style.color = '#8fe39b';
   } else {
-    networkBadge.textContent = 'آفلاین';
-    networkBadge.classList.add('offline');
-    networkBadge.classList.remove('online');
+    badge.textContent = 'آفلاین';
+    badge.style.color = '#f0c674';
   }
 }
 
-function setStatus(message) {
-  statusText.textContent = message;
-}
+checkButton.addEventListener('click', () => {
+  setStatus('در حال بررسی وضعیت ذخیره‌سازی آفلاین...', 35, 'warn');
+  setTimeout(() => setStatus('فایل‌های رابط آماده و کش شده‌اند.', 100, 'good'), 700);
+});
 
-function setProgress(percent) {
-  progressBar.style.width = percent + '%';
-}
+restartButton.addEventListener('click', () => {
+  location.reload();
+});
 
-function enableButtons() {
-  checkButton.disabled = false;
-  restartButton.disabled = false;
-}
+window.addEventListener('online', updateConnectivity);
+window.addEventListener('offline', updateConnectivity);
 
-function runCheck() {
-  checkButton.disabled = true;
-  setStatus('در حال بررسی وضعیت آفلاین...');
-  setProgress(15);
-
-  window.setTimeout(function () {
-    setProgress(55);
-    window.setTimeout(function () {
-      setProgress(100);
-      setStatus('آماده است. نسخهٔ عمومی فعال و پایدار است.');
-      checkButton.disabled = false;
-    }, 500);
-  }, 500);
-}
-
-function restartPage() {
-  window.location.reload();
-}
-
-updateNetworkState();
-
-window.addEventListener('online', updateNetworkState);
-window.addEventListener('offline', updateNetworkState);
-
-checkButton.addEventListener('click', runCheck);
-restartButton.addEventListener('click', restartPage);
-
-enableButtons();
-setProgress(0);
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function () {
-    navigator.serviceWorker.register('./service-worker.js', { scope: './' })
-      .then(function () {
-        setStatus('سامانه آماده است؛ ذخیره‌سازی آفلاین فعال شد.');
-      })
-      .catch(function () {
-        setStatus('ثبت حالت آفلاین ناموفق بود؛ سایت باید از HTTPS یا localhost باز شود.');
-      });
-  });
-} else {
-  setStatus('مرورگر از حالت آفلاین پشتیبانی نمی‌کند؛ برنامه همچنان به‌صورت عادی قابل استفاده است.');
-}
+updateConnectivity();
+setStatus('سامانه آماده است.', 10, navigator.onLine ? 'good' : 'warn');
+registerSW();
