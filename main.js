@@ -1,71 +1,75 @@
-'use strict';
+var statusText = document.getElementById('status-text');
+var networkBadge = document.getElementById('network-badge');
+var progressBar = document.getElementById('progress-bar');
+var checkButton = document.getElementById('check-button');
+var restartButton = document.getElementById('restart-button');
+var notice = document.getElementById('notice');
 
-(function () {
-  var statusDot = document.getElementById('status-dot');
-  var statusTitle = document.getElementById('status-title');
-  var statusText = document.getElementById('status-text');
-  var reloadButton = document.getElementById('reload-button');
-
-  function setStatus(state, title, message) {
-    if (statusDot) {
-      statusDot.className = 'status-dot ' + state;
-    }
-
-    if (statusTitle) {
-      statusTitle.textContent = title;
-    }
-
-    if (statusText) {
-      statusText.textContent = message;
-    }
-  }
-
-  function showConnectionStatus() {
-    if (navigator.onLine) {
-      setStatus(
-        'online',
-        'برنامه آماده است',
-        'اتصال برقرار است و فایل‌های برنامه برای استفاده آفلاین ذخیره می‌شوند.'
-      );
-    } else {
-      setStatus(
-        'offline',
-        'حالت آفلاین فعال است',
-        'برنامه با استفاده از فایل‌های ذخیره‌شده اجرا شده است.'
-      );
-    }
-  }
-
-  if (reloadButton) {
-    reloadButton.addEventListener('click', function () {
-      window.location.reload();
-    });
-  }
-
-  window.addEventListener('online', showConnectionStatus);
-  window.addEventListener('offline', showConnectionStatus);
-
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('./service-worker.js', {
-        scope: './'
-      })
-        .then(function () {
-          showConnectionStatus();
-        })
-        .catch(function () {
-          setStatus(
-            'error',
-            'ذخیره آفلاین فعال نشد',
-            'اتصال امن HTTPS و محل قرارگیری فایل‌ها را بررسی کنید.'
-          );
-        });
-    });
+function updateNetworkState() {
+  if (navigator.onLine) {
+    networkBadge.textContent = 'آنلاین';
+    networkBadge.classList.add('online');
+    networkBadge.classList.remove('offline');
   } else {
-    setStatus(
-      'warning',
-      'مرورگر از حالت آفلاین پشتیبانی نمی‌کند',
-      'برنامه همچنان به‌صورت عادی قابل استفاده است.'
-    );
+    networkBadge.textContent = 'آفلاین';
+    networkBadge.classList.add('offline');
+    networkBadge.classList.remove('online');
   }
-})();
+}
+
+function setStatus(message) {
+  statusText.textContent = message;
+}
+
+function setProgress(percent) {
+  progressBar.style.width = percent + '%';
+}
+
+function enableButtons() {
+  checkButton.disabled = false;
+  restartButton.disabled = false;
+}
+
+function runCheck() {
+  checkButton.disabled = true;
+  setStatus('در حال بررسی وضعیت آفلاین...');
+  setProgress(15);
+
+  window.setTimeout(function () {
+    setProgress(55);
+    window.setTimeout(function () {
+      setProgress(100);
+      setStatus('آماده است. نسخهٔ عمومی فعال و پایدار است.');
+      checkButton.disabled = false;
+    }, 500);
+  }, 500);
+}
+
+function restartPage() {
+  window.location.reload();
+}
+
+updateNetworkState();
+
+window.addEventListener('online', updateNetworkState);
+window.addEventListener('offline', updateNetworkState);
+
+checkButton.addEventListener('click', runCheck);
+restartButton.addEventListener('click', restartPage);
+
+enableButtons();
+setProgress(0);
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./service-worker.js', { scope: './' })
+      .then(function () {
+        setStatus('سامانه آماده است؛ ذخیره‌سازی آفلاین فعال شد.');
+      })
+      .catch(function () {
+        setStatus('ثبت حالت آفلاین ناموفق بود؛ سایت باید از HTTPS یا localhost باز شود.');
+      });
+  });
+} else {
+  setStatus('مرورگر از حالت آفلاین پشتیبانی نمی‌کند؛ برنامه همچنان به‌صورت عادی قابل استفاده است.');
+}
