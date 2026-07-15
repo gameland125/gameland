@@ -1,84 +1,85 @@
-<!DOCTYPE html>
-<html lang="fa">
+<!doctype html>
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <meta name="theme-color" content="#2b2b2b" />
-  <meta name="description" content="GAMELAND | Offline-first PWA" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="GAMELAND" />
-  <link rel="manifest" href="./manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="./icon-192.png" />
-  <link rel="icon" href="./icon-192.png" />
-  <link rel="stylesheet" href="./style.css" />
-  <title>GAMELAND</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="theme-color" content="#2b2b2b">
+  <meta name="description" content="Gameland PWA | پنل آفلاین و سبک">
+  <meta name="application-name" content="GAMELAND">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <title>GAMELAND | گیم‌لند</title>
+
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon-192.png">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <main class="app-shell">
-    <header class="topbar">
-      <div class="brand-block">
-        <div class="brand-mark" aria-hidden="true">G</div>
-        <div class="brand-text">
-          <h1>GAMELAND</h1>
-          <p>Powered by Qassem Akbarzadeh</p>
-        </div>
-      </div>
-
-      <div class="status-pill" aria-live="polite">
-        <span id="jbStatus">آماده</span>
+  <div class="shell">
+    <header class="brand">
+      <p class="eyebrow">GAMELAND</p>
+      <h1 id="brand-title">GAMELAND</h1>
+      <p class="owner">Powered by Qassem Akbarzadeh</p>
+      <div class="contact">
+        <span>کاشمر، خیابان ترابی ۱۵</span>
+        <a href="tel:09364229748" dir="ltr">09364229748</a>
       </div>
     </header>
 
-    <section class="hero">
-      <div class="panel">
-        <h2>GAMELAND PWA</h2>
-        <p class="lead">
-          نسخه‌ی سبک، آفلاین‌محور و آماده‌ی اجرا با ساختار ساده و قابل‌اعتماد.
-        </p>
+    <main class="main">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="label">SYSTEM STATUS</p>
+            <h2>پنل آفلاین گیم‌لند</h2>
+          </div>
+          <span id="network-badge" class="badge">در حال بررسی</span>
+        </div>
 
-        <div class="grid">
-          <label class="field">
-            <span>حالت نمایش</span>
-            <select id="modeSelect">
-              <option value="classic">Classic Gray</option>
-              <option value="compact">Compact</option>
-            </select>
-          </label>
+        <div class="firmware">
+          <span>PS4</span>
+          <strong>9.00</strong>
+          <i></i>
+          <strong>9.03</strong>
+        </div>
 
-          <label class="field">
-            <span>زبان رابط</span>
-            <select id="langSelect">
-              <option value="fa">فارسی</option>
-              <option value="en">English</option>
-            </select>
-          </label>
+        <div id="notice" class="notice" role="alert">
+          این نسخه فقط برای نمایش آفلاین و مدیریت فایل‌های محلی است.
         </div>
 
         <div class="actions">
-          <button id="startBtn" type="button">اجرای برنامه</button>
-          <button id="retryBtn" type="button" class="secondary">بازآغاز</button>
+          <button id="check-button" class="button button-primary" type="button">بررسی وضعیت آفلاین</button>
+          <button id="restart-button" class="button button-secondary" type="button">بازنشانی صفحه</button>
         </div>
 
-        <div class="note-box">
-          <p>کاشمر، خیابان ترابی ۱۵</p>
-          <p>09364229748</p>
+        <div class="progress" aria-hidden="true">
+          <span id="progress-bar"></span>
         </div>
-      </div>
 
-      <div class="loader-container" id="loaderBox" hidden>
-        <div id="loader" aria-hidden="true"></div>
-        <p id="loader-msg">در حال بارگذاری...</p>
-      </div>
-    </section>
-  </main>
+        <p id="status-text" class="status" aria-live="polite">سامانه آماده است.</p>
+      </section>
 
-  <footer class="footer">
-    <span>© 2026 GAMELAND</span>
-    <span>Qassem Akbarzadeh</span>
-  </footer>
+      <section class="info-grid" aria-label="ویژگی‌ها">
+        <article>
+          <b>OFFLINE FIRST</b>
+          <span>فایل‌ها پس از اولین بازدید در کش مرورگر ذخیره می‌شوند.</span>
+        </article>
+        <article>
+          <b>LIGHTWEIGHT</b>
+          <span>بدون کتابخانه‌های خارجی و بدون فایل‌های اضافی.</span>
+        </article>
+        <article>
+          <b>ROOT STRUCTURE</b>
+          <span>همه فایل‌ها در ریشه قرار دارند و مسیرها با <code>./</code> هستند.</span>
+        </article>
+      </section>
+    </main>
 
-  <script type="module" src="./main.js"></script>
+    <footer>GAMELAND · KASHMAR · 09364229748</footer>
+  </div>
+
+  <script src="./main.js" defer></script>
 </body>
 </html>
