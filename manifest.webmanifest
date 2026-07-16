@@ -1,25 +1,22 @@
 {
-  "name": "Gameland",
+  "name": "Gameland (گیم لند)",
   "short_name": "Gameland",
-  "description": "Offline-first PWA for Gameland",
+  "description": "PS4 Exploit & GoldHEN Loader - Powered by Qassem Akbarzadeh",
   "start_url": "./index.html",
-  "scope": "./",
   "display": "standalone",
+  "background_color": "#25282c",
+  "theme_color": "#25282c",
   "orientation": "portrait",
-  "background_color": "#f0f0f0",
-  "theme_color": "#5a5a5a",
   "icons": [
     {
-      "src": "./icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "./icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
