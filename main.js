@@ -1,106 +1,61 @@
-(function () {
-  'use strict';
+/**
+ * Gameland Main Logic
+ * Operator: Qassem Akbarzadeh
+ */
 
-  var CACHE_NAME = 'gameland-shell-v1';
+const APP_CONFIG = {
+    cacheName: 'gameland-shell-v1',
+    retryLimit: 3
+};
 
-  var badge = document.getElementById('network-badge');
-  var statusText = document.getElementById('status-text');
-  var progressBar = document.getElementById('progress-bar');
-  var checkButton = document.getElementById('check-button');
-  var restartButton = document.getElementById('restart-button');
+let retryCount = 0;
 
-  function setStatus(message) {
-    if (statusText) {
-      statusText.textContent = message;
+// گارد برای اطمینان از وجود المان‌ها در DOM
+const getElement = (id) => document.getElementById(id);
+
+const updateStatusUI = (isOnline, message) => {
+    const statusEl = getElement('connection-status');
+    if (!statusEl) return;
+
+    statusEl.textContent = message;
+    statusEl.className = isOnline ? 'status-online' : 'status-offline';
+};
+
+// مدیریت ثبت Service Worker
+async function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        try {
+            const registration = await navigator.serviceWorker.register('service-worker.js');
+            console.log('Service Worker registered:', registration.scope);
+        } catch (error) {
+            console.error('Service Worker registration failed:', error);
+        }
     }
-  }
+}
 
-  function setProgress(value) {
-    if (progressBar) {
-      progressBar.style.width = value;
+// مدیریت وضعیت آنلاین و آفلاین
+function handleConnectivityChange() {
+    if (navigator.onLine) {
+        updateStatusUI(true, 'وضعیت: آنلاین');
+    } else {
+        updateStatusUI(false, 'وضعیت: آفلاین (در حال استفاده از حالت کش)');
     }
-  }
+}
 
-  function setButtonState(button, disabled) {
-    if (button) {
-      button.disabled = disabled;
-    }
-  }
+// تابع اصلی شروع به کار برنامه
+async function initApp() {
+    // ۱. ثبت Service Worker
+    await registerServiceWorker();
 
-  function setNetworkStatus() {
-    if (!badge) {
-      return;
-    }
+    // ۲. مدیریت رویدادهای اتصال
+    window.addEventListener('online', handleConnectivityChange);
+    window.addEventListener('offline', handleConnectivityChange);
+    
+    // چک کردن وضعیت اولیه
+    handleConnectivityChange();
 
-    var online = navigator.onLine;
-    badge.textContent = online ? 'آنلاین' : 'حالت آفلاین';
-    badge.className = 'badge ' + (online ? 'online' : 'offline');
-  }
+    console.log('Gameland Initialized');
+}
 
-  function checkOfflineReady() {
-    setButtonState(checkButton, true);
-    setProgress('35%');
-    setStatus('در حال بررسی حافظهٔ آفلاین...');
-
-    if (!('serviceWorker' in navigator) || !('caches' in window)) {
-      setProgress('100%');
-      setStatus('این مرورگر از Service Worker پشتیبانی نمی‌کند.');
-      setButtonState(checkButton, false);
-      return;
-    }
-
-    caches
-      .has(CACHE_NAME)
-      .then(function (ready) {
-        setProgress('100%');
-        setStatus(
-          ready
-            ? 'رابط گیم‌لند برای استفادهٔ آفلاین آماده است.'
-            : 'کش هنوز آماده نیست؛ صفحه را یک‌بار تازه‌سازی کنید.'
-        );
-      })
-      .catch(function () {
-        setProgress('100%');
-        setStatus('بررسی حافظه انجام نشد. دوباره تلاش کنید.');
-      })
-      .finally(function () {
-        setButtonState(checkButton, false);
-      });
-  }
-
-  function registerServiceWorker() {
-    if (!('serviceWorker' in navigator)) {
-      return;
-    }
-
-    window.addEventListener('load', function () {
-      navigator.serviceWorker
-        .register('./service-worker.js', { scope: './' })
-        .then(function () {
-          setStatus('سامانه آماده است؛ ذخیره‌سازی آفلاین فعال شد.');
-        })
-        .catch(function () {
-          setStatus('ثبت حالت آفلاین ناموفق بود؛ سایت باید از HTTPS یا localhost باز شود.');
-        });
-    });
-  }
-
-  function bindEvents() {
-    window.addEventListener('online', setNetworkStatus);
-    window.addEventListener('offline', setNetworkStatus);
-
-    if (checkButton) {
-      checkButton.addEventListener('click', checkOfflineReady);
-    }
-
-    if (restartButton) {
-      restartButton.addEventListener('click', function () {
-        window.location.reload();
-      });
-    }
-  }
-
-  setNetworkStatus();
-  bindEvents();
-  registerServiceWorker();
-}());
+// شروع برنامه وقتی DOM آماده شد
+document.addEventListener('DOMContentLoaded', initApp);
