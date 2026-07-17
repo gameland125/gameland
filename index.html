@@ -1,37 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GAMELAND</title>
-    
-    <!-- PWA Meta Tags -->
-    <link rel="manifest" href="manifest.webmanifest">
-    <meta name="theme-color" content="#1a1a1a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#c9a227">
+  <meta name="description" content="PWA shell with golden status and offline cache">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./style.css">
+  <title>Gameland PWA</title>
 </head>
 <body>
+  <main class="app">
+    <section class="card">
+      <div class="top-row">
+        <span id="network-badge" class="badge offline">آفلاین</span>
+        <span id="install-badge" class="badge muted">در حال بررسی</span>
+      </div>
 
-    <header class="app-header">
-        <div class="brand">GAMELAND</div>
-        <div class="operator">Powered by Qassem Akbarzadeh</div>
-        <div class="location">کاشمر، خیابان ترابی ۱۵</div>
-        <div class="contact">09364229748</div>
-    </header>
+      <h1 class="title">Gameland</h1>
+      <p class="subtitle">نسخه امن PWA با پیام طلایی و حافظه آفلاین</p>
 
-    <main id="app-container">
-        <!-- محتوا توسط main.js مدیریت می‌شود -->
-        <div id="status-area" class="status-card">
-            <p id="connection-status">در حال بررسی وضعیت اتصال...</p>
+      <div class="status-panel">
+        <p id="status-text" class="status-text">در حال آماده‌سازی برنامه...</p>
+        <div class="progress-track" aria-hidden="true">
+          <div id="progress-bar" class="progress-bar"></div>
         </div>
-    </main>
+      </div>
 
-    <!-- Scripts -->
-    <script src="main.js"></script>
+      <div class="actions">
+        <button id="check-button" type="button">بررسی حافظه آفلاین</button>
+        <button id="restart-button" type="button">تازه‌سازی وضعیت</button>
+      </div>
+
+      <div class="golden-message" id="golden-message">
+        پیغام طلایی: برنامه آماده نصب و استفاده آفلاین است.
+      </div>
+    </section>
+  </main>
+
+  <script src="./main.js"></script>
 </body>
 </html>
