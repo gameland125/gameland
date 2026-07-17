@@ -15,10 +15,10 @@
         var savedTheme = localStorage.getItem('theme') || "index";
         var savedColor = localStorage.getItem('color') || "default";
         if (savedTheme) {
-            document.getElementById('main-stylesheet').setAttribute('href', '././layouts/' + savedTheme + '.css');
+            document.getElementById('main-stylesheet').setAttribute('href', './includes/css/layouts/' + savedTheme + '.css');
         }
         if (savedColor){
-            document.getElementById('color-stylesheet').setAttribute('href', '././colors/' + savedColor + '.css');
+            document.getElementById('color-stylesheet').setAttribute('href', './includes/css/colors/' + savedColor + '.css');
         }
     </script>
 </head>
@@ -577,7 +577,7 @@
         if (isPS4 && is67x && !userlandOnlyOnJB67x) {
             try {
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', './exploits/672entrypoint.js', false);
+                xhr.open('GET', 'includes/js/exploits/672entrypoint.js', false);
                 xhr.send('');
                 if (xhr.status === 200) {
                     eval.call(top.window, xhr.responseText);
@@ -607,18 +607,18 @@
     <script id="main-logic-loader">
         (function () {
             var isModern = 'noModule' in document.createElement('script');
-            var scriptPath = isModern ? '././index.js' : '././index-legacy.js';
+            var scriptPath = isModern ? './includes/js/index.js' : './includes/js/index-legacy.js';
             document.write('<script src="' + scriptPath + '"><\/script>');
         })();
     </script>
     <script src="./includes/payloads/payloads.js"></script>
-    <script src="././payloadsList.js"></script>
-    <script src="././design.js"></script>
-    <script src="././language.js"></script>
-    <script src="././HENs.js"></script>
-    <script src="././checkFw.js"></script>
-    <script src="././autoJbRetry.js"></script>
-    <script src="././events.js"></script>
+    <script src="./includes/js/payloadsList.js"></script>
+    <script src="./includes/js/design.js"></script>
+    <script src="./includes/js/language.js"></script>
+    <script src="./includes/js/HENs.js"></script>
+    <script src="./includes/js/checkFw.js"></script>
+    <script src="./includes/js/autoJbRetry.js"></script>
+    <script src="./includes/js/events.js"></script>
 </body>
 
 </html>
