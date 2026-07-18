@@ -2,37 +2,91 @@
 <html manifest="PSFree.manifest">
 <head>
 <title>PSFree-Lapse Exploit For PS4 9.00</title>
-<link rel="shortcut icon" href="favicon.ico"></link>
+<meta charset="UTF-8">
 <style>
-body{background-image:url("bg.jpg");background-repeat:no-repeat;background-size:70%;background-position:center;background-color:white;color:black;font-size:20px;text-align:center;margin:0;overflow:hidden;}
-.info{overflow:hidden;position:fixed;position:absolute;top:45%;left:50%;font-size:25px;font-family:sans-serif;color:black;transform:translate(-50%, -50%);}
+body{
+  background-color:white;
+  color:black;
+  font-size:20px;
+  text-align:center;
+  margin:0;
+  overflow:hidden;
+}
+.info{
+  overflow:hidden;
+  position:absolute;
+  top:45%;
+  left:50%;
+  font-size:25px;
+  font-family:sans-serif;
+  color:black;
+  transform:translate(-50%, -50%);
+}
 </style>
 <script>
-history.replaceState(null,null,'index.html');
-var histlength=history.length;
-history.go(-histlength);
+history.replaceState(null, null, 'index.html');
 
 function DLProgress(e){
   if(e.lengthComputable){
-    Percent=(Math.round(e.loaded / e.total * 100));
-    msgs.innerHTML="Installing Offline Cache ... " + Percent + "%";
+    var Percent = Math.round(e.loaded / e.total * 100);
+    msgs.innerHTML = "Installing Offline Cache ... " + Percent + "%";
   }else{
-    msgs.innerHTML="Installing Offline Cache ...";
+    msgs.innerHTML = "Installing Offline Cache ...";
   }
 }
 
 function DisplayCacheProgress(){
-  setTimeout(function(){msgs.innerHTML="Cache Installed Successfully";},2000);
-  setTimeout(function(){location.reload();},3000);
+  setTimeout(function(){
+    msgs.innerHTML = "Cache Installed Successfully";
+  }, 1000);
+
+  setTimeout(function(){
+    location.href = "index.html";
+  }, 2500);
 }
 
-window.applicationCache.addEventListener("progress",DLProgress,false);
-window.applicationCache.oncached=function(e){DisplayCacheProgress();};
-window.applicationCache.onupdateready=function(e){DisplayCacheProgress();};
-window.applicationCache.onerror=function(e){msgs.innerHTML="Cache install failed";};
+function DisplayNoUpdate(){
+  msgs.innerHTML = "Cache Already Installed";
+  setTimeout(function(){
+    location.href = "index.html";
+  }, 2000);
+}
+
+function DisplayCacheError(){
+  msgs.innerHTML = "Cache Install Failed";
+}
+
+window.onload = function(){
+  msgs.innerHTML = "Preparing Offline Cache ...";
+
+  if(window.applicationCache){
+    window.applicationCache.addEventListener("progress", DLProgress, false);
+
+    window.applicationCache.oncached = function(e){
+      DisplayCacheProgress();
+    };
+
+    window.applicationCache.onupdateready = function(e){
+      try{
+        window.applicationCache.swapCache();
+      }catch(err){}
+      DisplayCacheProgress();
+    };
+
+    window.applicationCache.onnoupdate = function(e){
+      DisplayNoUpdate();
+    };
+
+    window.applicationCache.onerror = function(e){
+      DisplayCacheError();
+    };
+  }else{
+    msgs.innerHTML = "Application Cache Not Supported";
+  }
+};
 </script>
 </head>
-<body style=overflow:hidden>
-<div id=msgs class=info style='-webkit-font-feature-settings:"tnum";font-feature-settings:"tnum";'></div>
+<body>
+<div id="msgs" class="info" style='-webkit-font-feature-settings:"tnum";font-feature-settings:"tnum";'></div>
 </body>
 </html>
