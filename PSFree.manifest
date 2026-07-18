@@ -1,6 +1,6 @@
 CACHE MANIFEST
-# v2
-# Generated for cache-only deployment without missing payload binaries
+# v3
+# cache-only manifest for current archive
 
 CACHE:
 index.html
@@ -25,6 +25,7 @@ includes/css/layouts/compact.css
 includes/css/layouts/index.css
 includes/css/colors/default.css
 includes/css/colors/vibrant.css
+includes/payloads/payloads.js
 src/alert.mjs
 src/config.mjs
 src/lapse.mjs
