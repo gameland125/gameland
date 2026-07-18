@@ -1,172 +1,133 @@
 # Changelog
 
-## v2.4b18.9
-- Added support for 13.00
-- Fixed MC4 cheat parser
-- Fixed Linux kexec support
-- Fixed Orbis Toolbox support
+All notable changes to this project will be documented in this file.
 
-## v2.4b18.8
-- Added Game Patch Menu and Downloader (from illusion repository)
-- Improved FTP speed
-- Improved ELF support in PayLoader server (ex BinLoader)
-- Fixed Remote Play enabler for 12.02
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v2.4b18.7
-- Added support for 12.50 and 12.52
-- Added support for Testkit (same fw as retail)
+## [Unreleased]
 
-## v2.4b18.6
-- Added BD-App AutoKill and Disc AutoEject
-- Added Plugins Downloader (Thanks to [ctn](https://github.com/ctn123))
-- Added AIO fix plugin support (Thanks to [jocover](https://github.com/jocover))
-- Updated GoldHEN top supporters page (Thanks to all)
+### Added
 
-## v2.4b18.5
-- Added support for 7.0x, 7.5x, 8.0x, 8.5x, 9.0x, 9.5x, 11.0x, 11.5x
-- Added Game Stats support
-- Added Date/Time auto update
-- Improved BinLoader server (ELF support)
+- Kernel patches from pOOBs4 by @ChendoChap and ported for 7.00-9.60
+  - 233 bytes to 307 bytes
+- Payload loader from pOOBs4 by @ChendoChap
+- `PROT_READ`, `PROT_WRITE`, `PROT_EXEC` constants for payload loader by
+  @janisslsm
+- Added loading payload from file
+- Added read8/read16/write8/write16 functions
+- Added 7.00-9.60 support
+  - Initial 9.00-9.60 ROP chain, by @janisslsm
+- Added GitHub actions to build PRs, push to `main`, and tags for releases.
 
-## v2.4b18.4
-- Added support for 12.00 and 12.02
+### Fixed
 
-## v2.4b18.3
-- Added Auto-Apply Cheats on game start
-- Added support for 9.03
-- Improved Klog server
+- Fixed corrupt pointer cleanup by abc
+- Fixed `ip6po_rthdr` offset for PS5 by abc
+- Verified the number of blocking requests needed to be two by abc
+- Only run kernel exploit once by checking setuid by @JTAG7371
+- ~~Restore syscall 661 (`sys_aio_submit()`) after patching by @janisslsm~~
+  - Was not actually restoring syscall. Used a different method/rewrote to
+  restore in kpatch. (Shellcode change 4)
+    - Shellcode from 345 bytes to 444 bytes
 
-## v2.4b18.2
-- Added PPPoE Patch to avoid multiple exploitations
-- Package Scanning Improvements:
-  Added support for excluding folders during package scanning. Folders starting with a dot (e.g., ".test") and those containing a ".ignore" file will be automatically skipped.
+### Changed
 
-## v2.4b18
-- Added Cheat Downloader
-- Added support for 10.50, 10.70 and 10.71
-- Improved rest mode support
-- Fixed network servers configuration save
-- Moved Klog server to userland (better network disconnection supports)
+- Cleanup/Linting/Tweaks/Fixes/etc
+  - Default Prettier config w/ 999 line length
+  - Default eslint config "problems" list trimmed down
+- Reorder make_aliased_pktopts to try and reclaim memory earlier, by abc
+- Simplify shellcode a little bit more
+  - No external headers
+  - Added `-fcf-protection=none` flag to skip added "endbr64" instructions
+  (Shellcode change 1)
+    - 307 bytes to 295 bytes
+  - Changed `restore` and `do_patch` to be inlined (Shellcode change 2)
+    - 307 bytes to 282 bytes
+  - Changed to `-03` for execution speed optimization (Shellcode change 3)
+    - 282 bytes to 345 bytes
+  - Move kbase calc to main function (Shellcode change 5)
+    - 444 bytes to 418 bytes
 
-## v2.4b17.3
-- Added support for 9.60
-- Improved BinLoader server (more payloads supported)
-- Improved Klog server (network disconnection supported)
-- Changed network servers configuration to declarative
+## [1.5.1] - 2025-05-12
 
-## v2.4b17.2
-- Added support for 10.00 / 10.01
+### Added
 
-## v2.4b17
-- Added support for kernel loaders
-- Added support for 11.00
-- Added syscall 11
+- `.gitignore` for kpatch output
+- Auto detect console type and firmware in `config.mjs`
+  - Used elsewhere to determine which offsets/patches/ROP chain are used
+- **WIP:** Add 8.50-9.60 support
+  - All offsets found
+  - Running into some issue here. Wiped out my JOP chains to redo them...
 
-## v2.4b16.2
-- Improved SysInfo stats
-- Fixed IP Address setting
+### Fixed
 
-## v2.4b16
-- Fixed IP Address overlay position bug 
+- Call `lapse.mjs` rather than `code.mjs`
+- Makefile for kpatch builds all currently available
 
-## v2.4b15
-- Improved plugin loader (Thanks to [illusion0001](https://github.com/illusion0001))
-- Improved FTP (Thanks to [hippie68](https://github.com/hippie68))
-- Added game patch plugin (Thanks to [illusion0001](https://github.com/illusion0001))
-- Added game overlay SysInfo (Thanks to [OSM](https://github.com/OSM-Made))
-- Added GoldHEN top supporters page in about section (Thanks to all) 
+### Changed
 
-## v2.4b14
-- Improved plugin loader (Thanks to [illusion0001](https://github.com/illusion0001))
-- Improved FTP (Thanks to [hippie68](https://github.com/hippie68))
-- Improved MC4 support (Thanks to [ctn](https://github.com/ctn123))
-- Added cheat description support (Thanks to [ctn](https://github.com/ctn123))
-- Added background package installation support
-- Added package info on package installation support
-- Fixed Orbis Toolbox support 
+- Use relative locations rather than absolute
+- Changed kpatch binaries to just be shellcode vs full ELFs
+  - 5,216 bytes to 257 bytes.
+- Build kpatch binaries with `-Os` rather than `-O`
+  - 257 bytes to 233 bytes.
+- Renamed/Formatted `CHANGELOG.md`, `README.md`, and `LICENSE`
 
-## v2.4b13
-- Improved xml/shn parser
-- Skipped /disc and $RECYCLE.BIN in pkg subdirectories search
+## [1.5.0] - 2025-05-08
 
-## v2.4b12
-- Fixed USB Subdirectories path
+### Added
 
-## v2.4b11
-- Fixed "Search Subdirectories" feature
-- Improved "Package Source" feature
+- Lapse kernel exploit
 
-## v2.4b10
-- Improved FTP self decryption
-- Fixed cheat navigation after rest mode
-- Added "Search Subdirectories" and "Show Package Path" features in Debug Settings
+### Fixed
 
-## v2.4b5
-- Added FTP Server v2.1 (Thanks to [hippie68](https://github.com/hippie68))
-- Added multi-cheats support
-- Added multi-firmware support [5.05 / 6.72 / 9.00]
-- Added package installer source settings
+- Rewrite PSFree exploit
 
-## v2.3
-- Added [Plugins](https://github.com/GoldHEN/GoldHEN_Plugins_Repository) support
-- Added FPS counter
-- Added TitleId label feature
-- Added MC4 cheat format support
-- Added Scanlines overlay
-- Added internal pkg installation support (/data/pkg) (Thanks to [OSM](https://github.com/OSM-Made)) 
+## [1.4.0](#) - 2024-01-25
 
-## v2.2.4
-- Fixed KLog tty redirect
+### Added
 
-## v2.2.3
-- Added debug settings
-- Added cheat settings
-- Added KLog settings
-- Added GoldHEN shortcut
-- Added PS2 cheat support
-- Added Southbridge info
-- Improved app version detection
-- Refactored GoldHEN menu
+- Kernel patch payload for 8.0x
 
-## v2.2.2
-- Added cheat absolute offset support
-- Fixed close option bug
-- Fixed Orbis Toolbox support bug
+### Fixed
 
-## v2.2.1
-- Improved Cheat Menu stability
+- Remove the risk of crashing from using the Chain classes
+- Remove the risk of crashing from using `make_buffer()`
+- (PS5 < 3.00) use valid config at `exploit.mjs:setup_ssv_data`
 
-## v2.2
-- Added Cheat Menu initial version
-- Added tty redirect to klog
+## [1.3.0](#) - ????-??-??
 
-## v2.1.2
-- Fixed config parser
+### Added
 
-## v2.1.1
-- Fixed multiple injections
+- ROP chain managers for 8.5x, 9.0x, 9.5x
 
-## v2.1
-- Added config file (/data/GoldHEN/config.ini)
-- Added Klog server on 3232 port
-- Improved rest mode support
+### Fixed
 
-## v2.0b2
-- Improved BinLoader server (still beta version)
+- Improve the speed and reliability of the exploit (`exploit.mjs`)
 
-## v2.0b
-- Added BinLoader server (beta version)
-- Added UI menu
-- Improved stability and FTP server
-- Fixed trophy timestamps
+### Removed
 
-## v1.1
-- Improved stability and FTP server
+- Support for webkitgtk 2.34.4, see 1.0.0 for a working implementation
 
-## v1.0
-- Public release
+## [1.2.0](#) - 2023-12-03
 
-# Known issue
+## Added
 
-## v2.4b17
-- klog server: After the pppwn, the klog server is not reachable immediately. A rest mode resume is needed to make it work.
+- Support for PS4 6.00-6.20
+
+## [1.1.0](#) - ????-??-??
+
+### Added
+
+- Support for running ROP chains (PS4 8.03)
+- Support for calling syscalls (PS4 8.03)
+
+## [1.0.0](#) - ????-??-??
+
+### Added
+
+- Proof-of-concept code to gain arbitrary read/write (PS4 6.50-9.60/PS5 1.00-5.50)
+
+[unreleased]: https://github.com/Al-Azif/psfree-lapse/compare/v1.5.1...HEAD
+[1.5.1]: https://github.com/Al-Azif/psfree-lapse/compare/v1.5.0...v1.5.1
+[1.5.0]: https://github.com/Al-Azif/psfree-lapse/releases/tag/v1.5.0
