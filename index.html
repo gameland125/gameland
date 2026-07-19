@@ -401,3 +401,10 @@
                     </label>
                     <label class="flex items-center text-white/80">
                         <input type="radio" name="language" value
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof loadSettings === 'function') {
+            loadSettings();
+        }
+    });
+</script>
