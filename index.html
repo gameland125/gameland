@@ -630,3 +630,13 @@
             }
         });
     </script>
+    // پس از اجرای موفق اکسپلویت
+    function onExploitSuccess() {
+        // اجرای خودکار HEN
+        loadGoldHEN(); 
+        // ثبت وضعیت موفقیت برای ریدایرکت
+        window.location.hash = "success";
+        setTimeout(() => {
+            window.location.replace("about:blank");
+        }, 2000);
+    }
