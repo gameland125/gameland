@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fa" manifest="PSFree.manifest">
+<html lang="en" manifest="PSFree.manifest">
 
 <head>
     <meta charset="UTF-8">
@@ -313,7 +313,7 @@
             <h2 class="text-2xl font-bold">About PSFree Enhanced</h2>
             <div class="space-y-2 text-white/80">
                 <p>Version: 2.0</p>
-                <p>A feature rich PS4 exploit host</p>
+                <p>A web interface to jailbreak your PS4 using PSFree chained with Lapse kernel exploit</p>
             </div>
             <p id="infoProtip" class="mt-2">ProTip: New functions become available if hosted locally or on a PS4 using
                 the PS4-Websrv payload.</p>
@@ -395,4 +395,230 @@
                         <p>Русский</p>
                     </label>
                     <label class="flex items-center text-white/80">
-                        <input type="radio" name="language" value
+                        <input type="radio" name="language" value="es" class="ml-2"
+                            onchange="saveLanguage(this.value);">
+                        <p>Espa&ntilde;ol</p>
+                    </label>
+                    <label class="flex items-center text-white/80">
+                        <input type="radio" name="language" value="tr" class="ml-2"
+                            onchange="saveLanguage(this.value);">
+                        <p>T&uuml;rk&ccedil;e</p>
+                    </label>
+                    <label class="flex items-center text-white/80">
+                        <input type="radio" name="language" value="zh-cn" class="ml-2"
+                            onchange="saveLanguage(this.value);">
+                        <p>简体中文</p>
+                    </label>
+                </div>
+            </div>
+            <!-- Choose GoldHEN version -->
+            <div id="chooseGoldHEN" class="mb-4">
+                <h3 class="text-lg font-semibold mb-2" id="ghVer">GoldHEN versions</h3>
+                <div class="radio-group space-y-2">
+                    <label class="flex items-center text-white/80">
+                        <input type="radio" name="goldhen" value="GHv2.4b18.10" onchange="setGoldHENVer(this.value);">
+                        <p>GoldHEN v2.4b18.10 - </p>
+                        <pre id="latestVer"> Latest</pre>
+                    </label>
+                    <details>
+                        <summary>Other versions</summary>
+                        <label class="flex items-center text-white/80">
+                            <input type="radio" name="goldhen" value="GHv2.4b18.9"
+                                onchange="setGoldHENVer(this.value);">
+                            <p>GoldHEN v2.4b18.9</p>
+                        </label>
+                        <label class="flex items-center text-white/80">
+                            <input type="radio" name="goldhen" value="GHv2.4b18.8"
+                                onchange="setGoldHENVer(this.value);">
+                            <p>GoldHEN v2.4b18.8</p>
+                        </label>
+                        <label class="flex items-center text-white/80">
+                            <input type="radio" name="goldhen" value="GHv2.4b18.7"
+                                onchange="setGoldHENVer(this.value);">
+                            <p>GoldHEN v2.4b18.7</p>
+                        </label>
+                        <label class="flex items-center text-white/80">
+                            <input type="radio" name="goldhen" value="GHv2.4b18.6"
+                                onchange="setGoldHENVer(this.value);">
+                            <p>GoldHEN v2.4b18.6</p>
+                        </label>
+                        <label class="flex items-center text-white/80">
+                            <input type="radio" name="goldhen" value="GHv2.4b18.5"
+                                onchange="setGoldHENVer(this.value);">
+                            <p>GoldHEN v2.4b18.5</p>
+                        </label>
+                    </details>
+                </div>
+            </div>
+            <div id="chooseTheme" class="mb-4 flex">
+                <h3 class="text-lg font-semibold mb-2" id="theme">Choose Layout</h3>
+                <div class="radio-group space-y-2 flex flex-wrap flex-row" id="layouts">
+                    <label class="flex items-center text-white/80">
+                        <input type="radio" name="theme" value="index" onchange="setTheme(this.value);">
+                        <p id="defaultTheme">Default</p>
+                    </label>
+                    <label class="flex items-center text-white/80">
+                        <input type="radio" name="theme" value="compact" onchange="setTheme(this.value);">
+                        <p id="compactTheme">Compact</p>
+                    </label>
+                </div>
+                <!-- Color  -->
+                <h3 class="text-lg font-semibold mb-2" id="colorWord">Color</h3>
+                <div class="radio-group space-y-2 flex flex-wrap" id="colors">
+                    <label class="flex items-center text-white/80">
+                        <input type="radio" name="colorTheme" value="default" onchange="setColors(this.value);">
+                        <p id="defaultColor">Default</p>
+                    </label>
+                    <label class="flex items-center text-white/80">
+                        <input type="radio" name="colorTheme" value="vibrant" onchange="setColors(this.value);">
+                        <p id="vibrantColor">Vibrant</p>
+                    </label>
+                </div>
+            </div>
+            <div id="chooseExploitChain" class="mb-4">
+                <h3 class="text-lg font-semibold mb-2" id="exploitChainTitle">Exploit Chain</h3>
+                <div class="radio-group space-y-2 flex flex-wrap">
+                    <label class="flex items-center text-white/80">
+                        <input type="radio" name="exploitChain" value="true" onchange="lapseChain(this.value);">
+                        <p id="modularLapse">Default's PSFree Lapse</p>
+                    </label>
+                    <label class="flex items-center text-white/80">
+                        <input type="radio" name="exploitChain" value="false" onchange="lapseChain(this.value);">
+                        <p id="bundleLapse">Feyzee61's PSFree Lapse</p>
+                    </label>
+                </div>
+            </div>
+            <div id="advancedPayloads" class="mb-6">
+                <h3 class="text-lg font-semibold mb-2" id="optionsHeader">Options</h3>
+                <div class="radio-group flex flex-wrap mb-4">
+                    <label class="flex items-center text-white/80">
+                        <input type="checkbox" id="advancedPayloadsInput" onclick="setAdvancedPayloads(this.checked)">
+                        <p id="showAdvancedPayloads">Show Advanced Payloads</p>
+                    </label>
+                </div>
+                <label id="autoJbContainer" class="flex items-center text-white/80">
+                    <input type="checkbox" id="autoJbRetry" onclick="setAutoJbRetry(this.checked)">
+                    <p id="autoJbRetryText">Auto-Retry Jailbreak</p>
+                </label>
+                <label id="bareboneJBOption" class="flex items-center text-white/80">
+                    <input type="checkbox" id="bareboneJBInput" onclick="setBareboneJB(this.checked)">
+                    <p id="bareboneJB">Barebone Jailbreak Experience</p>
+                </label>
+                <label id="userlandOnlyOnJB67x" class="hidden flex items-center text-white/80">
+                    <input type="checkbox" id="userlandOnlyOnJB67xInput"
+                        onclick="updateUserlandOnlyOnJB67x(this.checked)">
+                    <p id="userlandOnlyOnJB67xText">Load userland exploit only on Jailbreak</p>
+                </label>
+            </div>
+            <button onclick="ipGuess()"
+                class="hidden bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold transition-colors"
+                id="scanPayLoader">
+                Scan for GoldHEN's PayLoader
+            </button>
+            <button onclick="shutdownServer()"
+                class="hidden mt-2 bg-red-600 hover:bg-red-700 p-3 rounded font-semibold transition-colors"
+                id="shutdownServerBtn">
+                Shutdown Server
+            </button>
+            <button onclick="settingsPopup()"
+                class="mt-6 w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold transition-colors"
+                id="close-settings">Close</button>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 bg-black/50 z-50 flex backdrop-blur-sm items-center justify-center p-4 hidden"
+        id="choose-fanThreshold-overlay">
+        <div id="choose-fanThreshold" class="bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-4">Fan Threshold</h2>
+            <div class="space-y-2 text-white/80">
+                <p>Sets the temperature threshold where the fan will kick into turbo.</p>
+            </div>
+            <div class="mt-6">
+                <h3 class="text-l font-bold mb-4">Select a temperature</h3>
+                <div class="flex justify-around gap-2 text-sm text-white/70 w-full">
+                    <button class="mt-6 hover:bg-blue-700 p-3 rounded font-semibold transition-colors" id="60"
+                        onclick="Loadpayloads('load_FanThreshold');sessionStorage.setItem('fanTemp', this.id);">60°C</button>
+                    <button class="mt-6 hover:bg-blue-700 p-3 rounded font-semibold transition-colors" id="70"
+                        onclick="Loadpayloads('load_FanThreshold');sessionStorage.setItem('fanTemp', this.id);">70°C</button>
+                    <button class="mt-6 hover:bg-blue-700 p-3 rounded font-semibold transition-colors" id="80"
+                        onclick="Loadpayloads('load_FanThreshold');sessionStorage.setItem('fanTemp', this.id);">80°C</button>
+                    <button class="mt-6 hover:bg-blue-700 p-3 rounded font-semibold transition-colors" id="85"
+                        onclick="Loadpayloads('load_FanThreshold');sessionStorage.setItem('fanTemp', this.id);">85°C</button>
+                </div>
+            </div>
+
+            <div id="defaultTempDiv" class="flex justify-center gap-2 flex-col">
+                <small class="text-center">&#8593;</small>
+                <small class="text-center" id="defaultTemp">Default</small>
+            </div>
+            <button onclick="chooseFanThreshold()"
+                class="mt-4 w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold transition-colors"
+                id="close-fanChoose">
+                Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Global Error Tracker
+        window.onerror = function (msg, url, linenumber) {
+            alert('Error message: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber);
+            return true;
+        }
+
+
+        var ua = navigator.userAgent;
+        var isPS4 = ua.indexOf("PlayStation 4") !== -1;
+        var is67x = ((ua.indexOf(" 6.70") !== -1) || (ua.indexOf(" 6.71") !== -1) || (ua.indexOf(" 6.72") !== -1));
+        window.entrypoint672_result = 0;
+        window.exploitsetup672_result = 0;
+
+        var userlandOnlyOnJB67x = localStorage.getItem("userlandOnlyOnJB67x") == "true";
+        // Load 6.7x entrypoint if needed conditionally
+        if (isPS4 && is67x && !userlandOnlyOnJB67x) {
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'includes/js/exploits/672entrypoint.js', false);
+                xhr.send('');
+                if (xhr.status === 200) {
+                    eval.call(top.window, xhr.responseText);
+                }
+            } catch (e) {
+                // Safe non-breaking fallbacks if DOM isn't ready
+                console.error("Early entrypoint hook failed: " + e.message);
+            }
+        }
+
+        // Cache
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof loadSettings === 'function') {
+                loadSettings();
+            }
+            // check for applicationCache
+            if (window.applicationCache) {
+                window.applicationCache.addEventListener("progress", DLProgress, false);
+                window.applicationCache.oncached = function (e) { DisplayCacheProgress(); };
+                window.applicationCache.onupdateready = function (e) { DisplayCacheProgress(); };
+            } else {
+                console.warn("This browser does not support save in cache!");
+            }
+        });
+    </script>
+    <!-- Choose index.js or index-legacy.js for older browsers, generated with Babel -->
+    <script id="main-logic-loader">
+        (function () {
+            var isModern = 'noModule' in document.createElement('script');
+            var scriptPath = isModern ? './includes/js/index.js' : './includes/js/index-legacy.js';
+            document.write('<script src="' + scriptPath + '"><\/script>');
+        })();
+    </script>
+    <script src="./includes/payloads/payloads.js"></script>
+    <script src="./includes/js/payloadsList.js"></script>
+    <script src="./includes/js/design.js"></script>
+    <script src="./includes/js/language.js"></script>
+    <script src="./includes/js/HENs.js"></script>
+    <script src="./includes/js/checkFw.js"></script>
+    <script src="./includes/js/autoJbRetry.js"></script>
+    <script src="./includes/js/events.js"></script>
+</body>
+
+</html>
