@@ -251,14 +251,19 @@ async function badHoistJailbreak() {
 }
 
 function jailbreakSuccess() {
-  if (sessionStorage.getItem('jailbreakNow') == "true" && user.ps4Fw >= 6.70 && user.ps4Fw <= 6.72) {
-    sessionStorage.removeItem('jailbreakNow');
-    localStorage.setItem("userlandOnlyOnJB67x", "false");
-  }
   sessionStorage.setItem('autoJbRetry', 'false');
   updateJbStats(0, 1);
-  setTimeout(() => { window.location.href = "./"; }, 5000);
+
+  // اجرای خودکار GoldHEN
+  // نام تابع loadGoldHEN یا هر اسم دیگری که GoldHEN را فعال می‌کند
+  loadGoldHEN(); // اگر نام تابع فرق دارد، اینجا اصلاح کنید
+
+  // تاخیر کوتاه برای ارسال فرمان و سپس ریدایرکت مخفی
+  setTimeout(() => {
+    window.location.replace("about:blank");
+  }, 1000); // 1 ثانیه تاخیر
 }
+
 
 // Taken from Feyzee61's ps4jb
 function getScript(source) {
