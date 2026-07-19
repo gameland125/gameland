@@ -408,3 +408,10 @@
         }
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof loadSettings === 'function') {
+            loadSettings();
+        }
+    });
+</script>
