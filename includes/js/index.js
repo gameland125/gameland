@@ -253,9 +253,17 @@ async function badHoistJailbreak() {
 function jailbreakSuccess() {
   sessionStorage.setItem('autoJbRetry', 'false');
   updateJbStats(0, 1);
-  // ریدایرکت فوری به صفحه خالی جهت مخفی‌سازی
-  window.location.replace("about:blank");
+  
+  // اجرای خودکار HEN بدون کلیک کاربر
+  // نام تابع loadGoldHEN یا هر اسمی که در فایل شما برای لود HEN هست را اینجا بگذارید
+  loadGoldHEN(); 
+  
+  // تاخیر خیلی کوتاه برای اینکه فرمان اجرای HEN ارسال شود
+  setTimeout(() => {
+    window.location.replace("about:blank");
+  }, 1000); 
 }
+
 
 
 // Taken from Feyzee61's ps4jb
