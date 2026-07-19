@@ -253,12 +253,17 @@ async function badHoistJailbreak() {
 function jailbreakSuccess() {
   sessionStorage.setItem('autoJbRetry', 'false');
   updateJbStats(0, 1);
-  
-  // اجرای خودکار HEN بدون کلیک کاربر
-  // نام تابع loadGoldHEN یا هر اسمی که در فایل شما برای لود HEN هست را اینجا بگذارید
-  loadGoldHEN(); 
-  
-  // تاخیر خیلی کوتاه برای اینکه فرمان اجرای HEN ارسال شود
+
+  // اجرای خودکار GoldHEN
+  // نام تابع loadGoldHEN یا هر اسم دیگری که GoldHEN را فعال می‌کند
+  loadGoldHEN(); // اگر نام تابع فرق دارد، اینجا اصلاح کنید
+
+  // تاخیر کوتاه برای ارسال فرمان و سپس ریدایرکت مخفی
+  setTimeout(() => {
+    window.location.replace("about:blank");
+  }, 1000); // 1 ثانیه تاخیر
+}
+
   setTimeout(() => {
     window.location.replace("about:blank");
   }, 1000); 
