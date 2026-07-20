@@ -137,3 +137,15 @@ document.getElementById("close-settings").addEventListener('click', function () 
         localStorage.setItem("NewUser", "0");
     }
 });
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        try {
+            if (user.blockJailbreak) return;
+            user.blockJailbreak = true;
+            chooseHEN();
+            jailbreak();
+        } catch (e) {
+            console.error("Auto jailbreak failed:", e);
+        }
+    }, 1200);
+});
