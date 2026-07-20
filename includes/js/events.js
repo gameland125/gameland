@@ -137,9 +137,3 @@ document.getElementById("close-settings").addEventListener('click', function () 
         localStorage.setItem("NewUser", "0");
     }
 });
-ui.logo.addEventListener('click', () => {
-    if (user.blockJailbreak) return;
-    user.blockJailbreak = true;
-    chooseHEN();
-    jailbreak();
-});
