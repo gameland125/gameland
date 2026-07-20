@@ -14,7 +14,8 @@ function DisplayCacheProgress(){
 setTimeout(function(){msgs.innerHTML="Cache Installed Successfully";},2000);
 setTimeout(function(){location.reload();},3000);
 }
-window.applicationCache.addEventListener("progress",DLProgress,false);window.applicationCache.oncached=function(e){DisplayCacheProgress();};window.applicationCache.onupdateready=function(e){DisplayCacheProgress();};
+window.applicationCache.onupdateready = function(e){
+    DisplayCacheProgres();};
 </script>
 </head>
 <body style=overflow:hidden>
