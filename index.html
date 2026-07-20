@@ -622,20 +622,3 @@
 </body>
 
 </html>
-document.addEventListener('DOMContentLoaded', () => {
-    if (typeof loadSettings === 'function') loadSettings();
-
-    if (window.applicationCache) {
-        window.applicationCache.addEventListener("progress", DLProgress, false);
-
-        window.applicationCache.oncached = function () {
-            DisplayCacheProgress();
-            sessionStorage.setItem('cacheReady', 'true');
-        };
-
-        window.applicationCache.onupdateready = function () {
-            DisplayCacheProgress();
-            sessionStorage.setItem('cacheReady', 'true');
-        };
-    }
-});
