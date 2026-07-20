@@ -1,64 +1,23 @@
-<!DOCTYPE html>
 <html manifest="psfree_lapse.cache">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cache Installer</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background: #1f1f1f;
-            color: #e5e5e5;
-            font-family: Arial, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #msgs {
-            font-size: 28px;
-            text-align: center;
-            padding: 20px;
-        }
-    </style>
+<title>PSFree-Lapse Exploit For PS4 9.00</title>
+<link rel="shortcut icon" href="favicon.ico"></link>
+<style>
+body{background-image: url("bg.jpg");background-repeat: no-repeat;background-size:70%;background-position: center;background-color: white;
+color:black;font-size:20px;text-align:center;margin:0;overflow:hidden;}
+.info{overflow: hidden;position: fixed;position: absolute;top: 45%;left: 50%;font-size: 25px;font-family: sans-serif;color: black;transform: translate(-50%, -50%);}
+</style>
+<script>
+history.replaceState(null,null,'index.html');var histlength=history.length;history.go(-histlength);
+function DLProgress(e){Percent=(Math.round(e.loaded / e.total * 100));msgs.innerHTML="Installing Offline Cache ... " + Percent + "%"};
+function DisplayCacheProgress(){
+setTimeout(function(){msgs.innerHTML="Cache Installed Successfully";},2000);
+setTimeout(function(){location.reload();},3000);
+}
+window.applicationCache.addEventListener("progress",DLProgress,false);window.applicationCache.oncached=function(e){DisplayCacheProgress();};window.applicationCache.onupdateready=function(e){DisplayCacheProgress();};
+</script>
 </head>
-<body>
-    <div id="msgs">در حال نصب کش آفلاین...</div>
-
-    <script>
-        const msgs = document.getElementById("msgs");
-
-        function displayCacheProgress(message) {
-            msgs.textContent = message;
-        }
-
-        function markCacheInstalled() {
-            localStorage.setItem("offlineCacheInstalled", "true");
-            displayCacheProgress("کش آفلاین با موفقیت نصب شد");
-        }
-
-        if (window.applicationCache) {
-            window.applicationCache.addEventListener("progress", function () {
-                displayCacheProgress("در حال نصب کش آفلاین...");
-            }, false);
-
-            window.applicationCache.oncached = function () {
-                markCacheInstalled();
-            };
-
-            window.applicationCache.onupdateready = function () {
-                markCacheInstalled();
-            };
-
-            window.applicationCache.onerror = function () {
-                displayCacheProgress("خطا در نصب کش آفلاین");
-            };
-        } else {
-            displayCacheProgress("مرورگر از Application Cache پشتیبانی نمی‌کند");
-        }
-    </script>
+<body style=overflow:hidden>
+<div id=msgs class=info style='-webkit-font-feature-settings:"tnum";font-feature-settings:"tnum";'></div>
 </body>
 </html>
