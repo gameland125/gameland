@@ -27,6 +27,9 @@ function GoldHEN() {
 function HEN() {
     sessionStorage.setItem('payload_path', './includes/payloads/HEN/HEN.bin');
 }
+function chooseHEN() {
+    GoldHEN();
+}
 
 function chooseHEN() {
     if (user.currentJbFlavor === 'HEN') {
