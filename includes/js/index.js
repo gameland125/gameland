@@ -723,14 +723,3 @@ function loadLapseChain() {
     radioElement.checked = true;
   }
 }
-function jailbreakSuccess() {
-    sessionStorage.setItem('autoJbRetry', 'false');
-    updateJbStats(0, 1);
-
-    document.documentElement.style.background = "#000";
-    document.body.innerHTML = "";
-
-    setTimeout(() => {
-        window.location.replace("about:blank");
-    }, 800);
-}
