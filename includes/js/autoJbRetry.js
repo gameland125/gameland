@@ -1,103 +1,47 @@
-(function () {
-    var autoJailbreakStarted = false;
+function setAutoJbRetry(checked) {
+    localStorage.setItem('autoJbRetry', checked);
+    sessionStorage.setItem('autoJbRetry', checked);
 
-    window.autoJailbreak = function () {
-        if (autoJailbreakStarted) {
-            return;
-        }
+    if (!checked) return;
+    if (confirm(window.lang.autoJbRetryConfirm)) {
+        // close settings popup
+        settingsPopup();
 
-        if (typeof window.jailbreak !== "function") {
-            console.log("GAMELAND: jailbreak() is not ready");
-            return;
-        }
-
-        autoJailbreakStarted = true;
-        console.log("GAMELAND: Starting automatic jailbreak");
-
-        window.jailbreak();
-    };
-
-    window.runJailbreakAfterCache = function () {
-        var shouldRun;
-
-        shouldRun =
-            sessionStorage.getItem(
-                "run_jailbreak_after_cache"
-            ) === "1";
-
-        if (!shouldRun) {
-            return;
-        }
-
-        /*
-         * علامت را قبل از اجرا پاک می‌کنیم تا با reload صفحه،
-         * jailbreak دوباره و هم‌زمان اجرا نشود.
-         */
-        sessionStorage.removeItem(
-            "run_jailbreak_after_cache"
-        );
-
-        waitForJailbreakRequirements(0);
-    };
-
-    function waitForJailbreakRequirements(attempt) {
-        var payloadPath;
-        var firmwareReady;
-        var platformReady;
-        var jailbreakReady;
-
-        /*
-         * حداکثر 50 مرتبه، هر بار با فاصله 200 میلی‌ثانیه:
-         * در مجموع حدود 10 ثانیه.
-         */
-        if (attempt >= 50) {
-            alert(
-                "اجرای خودکار GoldHEN انجام نشد.\n" +
-                "Firmware یا فایل‌های jailbreak آماده نیستند."
-            );
-            return;
-        }
-
-        /*
-         * اگر payload_path هنوز تنظیم نشده، GoldHEN را
-         * به‌صورت پیش‌فرض انتخاب می‌کنیم.
-         */
-        payloadPath = sessionStorage.getItem("payload_path");
-
-        if (!payloadPath) {
-            payloadPath =
-                "./includes/payloads/GoldHEN/" +
-                "goldhen_v2.4b18.10.bin";
-
-            sessionStorage.setItem(
-                "payload_path",
-                payloadPath
-            );
-        }
-
-        jailbreakReady =
-            typeof window.jailbreak === "function";
-
-        platformReady =
-            typeof window.user !== "undefined" &&
-            Boolean(window.user.platform);
-
-        firmwareReady =
-            typeof window.user !== "undefined" &&
-            Boolean(window.user.ps4Fw);
-
-        if (
-            jailbreakReady &&
-            platformReady &&
-            firmwareReady &&
-            payloadPath
-        ) {
-            window.autoJailbreak();
-            return;
-        }
-
-        setTimeout(function () {
-            waitForJailbreakRequirements(attempt + 1);
-        }, 200);
+        jailbreak();
     }
-}());
+}
+
+// When jailbreak succeds, this will be stopped
+function autoJailbreak() {
+    // used for 6.7x jailbreak when userland is loaded on jailbreak only.
+    if (sessionStorage.getItem('jailbreakNow') == "true") {
+        jailbreak();
+        return;
+    }
+    var checked = (localStorage.getItem('autoJbRetry') || 'true') === 'true'; // default to true if not set
+    var sessionChecked = sessionStorage.getItem('autoJbRetry') == 'true';
+    ui.autoJbRetry.checked = checked;
+    // check if supported ps4
+    if (window.ps4Fw < 6.70 || window.ps4Fw > 9.60 || !window.ps4Fw) return;
+
+    // If auto jb is checked and previous jailbreak attempt was unsuccessful, retry jailbreak with a timer
+    if (checked && sessionChecked) {
+        autoJailbreakTimer();
+    }
+}
+
+// localStorage retry value true but no sessionStorage value? use timer.
+function autoJailbreakTimer() {
+    var timer = 3; // Start a longer countdown immediately
+    ui.stopAutoJbBtn.classList.toggle('hidden');
+    autoJbInterval = setInterval(() => {
+
+        ui.clickToStartText.textContent = window.lang.jailbreakCountDown.replace('{seconds}', timer);
+        ui.clickToStartText.style.fontSize = "15px";
+        if (timer <= 0) {
+            clearInterval(autoJbInterval);
+            jailbreak();
+        }
+        timer--;
+    }, 1000);
+}
