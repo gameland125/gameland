@@ -18,18 +18,15 @@ function autoJailbreak() {
         jailbreak();
         return;
     }
-
     var checked = (localStorage.getItem('autoJbRetry') || 'true') === 'true'; // default to true if not set
-    var sessionChecked = (sessionStorage.getItem('autoJbRetry') || 'true') === 'true';
-
+    var sessionChecked = sessionStorage.getItem('autoJbRetry') == 'true';
     ui.autoJbRetry.checked = checked;
-
     // check if supported ps4
     if (window.ps4Fw < 6.70 || window.ps4Fw > 9.60 || !window.ps4Fw) return;
 
-    // If auto jb is checked and previous jailbreak attempt was unsuccessful, retry jailbreak with a timer
+    // If auto jailbreak is enabled for this session, start it directly.
     if (checked && sessionChecked) {
-        autoJailbreakTimer();
+        jailbreak();
     }
 }
 
