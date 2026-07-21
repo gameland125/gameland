@@ -589,36 +589,20 @@
         }
 
         // Cache
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof loadSettings === 'function') {
-                loadSettings();
-            }
-            // check for applicationCache
-            if (window.applicationCache) {
-                window.applicationCache.addEventListener("progress", DLProgress, false);
-                window.applicationCache.oncached = function (e) { DisplayCacheProgress(); };
-                window.applicationCache.onupdateready = function (e) { DisplayCacheProgress(); };
-            } else {
-                console.warn("This browser does not support save in cache!");
-            }
-        });
-    </script>
-    <!-- Choose index.js or index-legacy.js for older browsers, generated with Babel -->
-    <script id="main-logic-loader">
-        (function () {
-            var isModern = 'noModule' in document.createElement('script');
-            var scriptPath = isModern ? './includes/js/index.js' : './includes/js/index-legacy.js';
-            document.write('<script src="' + scriptPath + '"><\/script>');
-        })();
-    </script>
-    <script src="./includes/payloads/payloads.js"></script>
-    <script src="./includes/js/payloadsList.js"></script>
-    <script src="./includes/js/design.js"></script>
-    <script src="./includes/js/language.js"></script>
-    <script src="./includes/js/HENs.js"></script>
-    <script src="./includes/js/checkFw.js"></script>
-    <script src="./includes/js/autoJbRetry.js"></script>
-    <script src="./includes/js/events.js"></script>
-</body>
+        if (window.applicationCache) {
+    window.applicationCache.addEventListener(
+        "progress",
+        DLProgress,
+        false
+    );
 
-</html>
+    window.applicationCache.oncached =
+        function (e) {
+            DisplayCacheProgress();
+        };
+
+    window.applicationCache.onupdateready =
+        function (e) {
+            DisplayCacheProgress();
+        };
+}
