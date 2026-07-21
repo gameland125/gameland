@@ -32,8 +32,7 @@ function autoJailbreak() {
         localStorage.removeItem('cacheInstalled');
         jailbreak();
         return;
-    }
-
+        autoJailbreak();
     // Normal retry flow
     if (checked && sessionChecked) {
         autoJailbreakTimer();
