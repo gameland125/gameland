@@ -1,5 +1,5 @@
 function setAutoJbRetry(checked) {
-    localStorage.setItem('autoJbRetry', checked);
+    sessionStorage.setItem('autoJbRetry', checked);
     sessionStorage.setItem('autoJbRetry', checked);
 
     if (!checked) return;
