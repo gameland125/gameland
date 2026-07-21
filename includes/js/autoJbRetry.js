@@ -45,10 +45,3 @@ function autoJailbreakTimer() {
         timer--;
     }, 1000);
 }
-document.addEventListener("DOMContentLoaded", function () {
-    loadSettings();
-
-    setTimeout(function () {
-        autoJailbreak();
-    }, 1000);
-});
