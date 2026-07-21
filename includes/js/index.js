@@ -251,8 +251,8 @@ async function badHoistJailbreak() {
 }
 
 function jailbreakSuccess() {
-  if (sessionStorage.getItem('jailbreakNow') == "true" && user.ps4Fw >= 6.70 && user.ps4Fw <= 6.72) {
-    sessionStorage.removeItem('jailbreakNow');
+  if (localStorage.getItem('jailbreakNow') == "true" && user.ps4Fw >= 6.70 && user.ps4Fw <= 6.72) {
+    localStorage.removeItem('jailbreakNow');
     localStorage.setItem("userlandOnlyOnJB67x", "false");
   }
   sessionStorage.setItem('autoJbRetry', 'false');
