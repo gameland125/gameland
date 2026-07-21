@@ -41,8 +41,8 @@ body {
     function onInstalled() {
     setMessage('Cache Installed Successfully');
 
-    sessionStorage.setItem('autoJbRetry', 'true');
-    sessionStorage.setItem('cacheInstalled', 'true');
+    localStorage.setItem('autoJbRetry', 'true');
+    localStorage.setItem('cacheInstalled', 'true');
 
     setTimeout(goToIndex, 1000);
     }
