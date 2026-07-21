@@ -506,7 +506,12 @@ function _loadSettings() {
           loadAdvancedPayloads();
           loadLastTab();
           loadGoldHENVer();
-          autoJailbreak();
+
+          // اجرای خودکار جیلبریک دقیقاً پس از نصب موفق کش آفلاین
+          if (sessionStorage.getItem('cacheInstalled') === 'true') {
+            sessionStorage.removeItem('cacheInstalled');
+            autoJailbreak();
+          }
           updateBareboneJB();
           loadLapseChain();
           userlandOnlyOnJB67x();
