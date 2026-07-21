@@ -1,50 +1,60 @@
 <html manifest="PSFree.manifest">
 <head>
 <meta charset="utf-8">
-<title>Cache Installer</title>
+<title>PSFree-Lapse Exploit For PS4 9.00</title>
+<link rel="shortcut icon" href="favicon.ico">
 <style>
-body {
-    background-color: #333;
-    color: white;
-    font-family: sans-serif;
+body{
+    background-image: url("bg.jpg");
+    background-repeat: no-repeat;
+    background-size: 70%;
+    background-position: center;
+    background-color: white;
+    color: black;
+    font-size: 20px;
     text-align: center;
-    padding-top: 100px;
+    margin: 0;
+    overflow: hidden;
 }
-#msgs {
-    font-size: 24px;
-    font-weight: bold;
+.info{
+    overflow: hidden;
+    position: fixed;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    font-size: 25px;
+    font-family: sans-serif;
+    color: black;
+    transform: translate(-50%, -50%);
 }
 </style>
-</head>
-<body>
-<div id="msgs">Installing Offline Cache...</div>
-
 <script>
-history.replaceState(null, null, "index.html");
+var cacheCompleted = false;
 
 function DLProgress(e) {
-    var percent = Math.round((e.loaded / e.total) * 100);
+    var total = e.total || 1;
+    var percent = Math.round((e.loaded / total) * 100);
     document.getElementById("msgs").innerHTML = "Installing Offline Cache ... " + percent + "%";
 }
 
 function DisplayCacheProgress() {
-    setTimeout(function () {
-        document.getElementById("msgs").innerHTML = "Cache Installed Successfully";
-    }, 2000);
+    if (cacheCompleted) return;
+    cacheCompleted = true;
+
+    document.getElementById("msgs").innerHTML = "Cache Installed Successfully";
+    sessionStorage.setItem("continueAfterInstall", "true");
 
     setTimeout(function () {
-        sessionStorage.setItem("continueAfterInstall", "true");
-        location.href = "index.html";
+        location.replace("index.html");
     }, 3000);
 }
 
 window.applicationCache.addEventListener("progress", DLProgress, false);
-window.applicationCache.oncached = function (e) {
-    DisplayCacheProgress();
-};
-window.applicationCache.onupdateready = function (e) {
-    DisplayCacheProgress();
-};
+window.applicationCache.addEventListener("cached", DisplayCacheProgress, false);
+window.applicationCache.addEventListener("updateready", DisplayCacheProgress, false);
 </script>
+</head>
+<body style="overflow:hidden">
+<div id="msgs" class="info" style='-webkit-font-feature-settings:"tnum";font-feature-settings:"tnum";'></div>
 </body>
 </html>
