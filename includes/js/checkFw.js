@@ -107,3 +107,6 @@ function CheckFW() {
 function autoJailbreak() {
     jailbreak();
 }
+function autoJailbreak() {
+    jailbreak();
+}
