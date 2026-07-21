@@ -723,3 +723,10 @@ function loadLapseChain() {
     radioElement.checked = true;
   }
 }
+var debugPayloadPath = sessionStorage.getItem("payload_path");
+
+alert(
+    "Firmware: " + user.ps4Fw +
+    "\nPlatform: " + user.platform +
+    "\nPayload: " + debugPayloadPath
+);
