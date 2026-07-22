@@ -24,9 +24,8 @@ function autoJailbreak() {
     // check if supported ps4
     if (window.ps4Fw < 6.70 || window.ps4Fw > 9.60 || !window.ps4Fw) return;
 
-    // If cache installation completed or auto jailbreak is enabled for this session, start directly.
-    if (cacheInstalled || (checked && sessionChecked)) {
-        localStorage.removeItem('cacheInstalled');
+    // If auto jailbreak is enabled for this session, start it directly.
+    if (checked && sessionChecked) {
         jailbreak();
     }
 }

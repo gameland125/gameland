@@ -350,13 +350,7 @@ async function loadSettings() {
     loadAdvancedPayloads();
     loadLastTab();
     loadGoldHENVer();
-
-    if (localStorage.getItem('cacheInstalled') === 'true') {
-      localStorage.removeItem('cacheInstalled');
-      autoJailbreak();
-    } else {
-      autoJailbreak();
-    }
+    autoJailbreak();
     updateBareboneJB();
     loadLapseChain();
     userlandOnlyOnJB67x();
