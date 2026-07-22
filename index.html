@@ -13,7 +13,7 @@
     <script>
         // Prevent "Theme Flash" by applying the href before the body renders
         var savedTheme = localStorage.getItem('theme') || "index";
-        var savedColor = localStorage.getItem('color') || "gameland";
+        var savedColor = localStorage.getItem('color') || "default";
         if (savedTheme) {
             document.getElementById('main-stylesheet').setAttribute('href', './includes/css/layouts/' + savedTheme + '.css');
         }
@@ -21,9 +21,19 @@
             document.getElementById('color-stylesheet').setAttribute('href', './includes/css/colors/' + savedColor + '.css');
         }
     </script>
+    <link rel="stylesheet" href="./includes/css/colors/gameland.css?v=20260723-minimal-v1" id="gameland-visual-theme">
 </head>
 
 <body class="bg-gray-900 text-white">
+    <div id="gameland-brand-shell" aria-label="Gameland">
+        <h1 class="gameland-title">GAMELAND</h1>
+        <div class="gameland-powered">Powered by Qassem Akbarzadeh</div>
+        <div class="gameland-contact">
+            <span>کاشمر، خیابان ترابی ۱۵</span>
+            <span class="gameland-phone">09364229748</span>
+        </div>
+    </div>
+
     <main class="mainContainer">
         <section id="initial-screen" class="relative flex flex-col items-center justify-center min-h-screen p-6 transition-opacity duration-700
             opacity-100">
@@ -473,11 +483,6 @@
                         <input type="radio" name="colorTheme" value="vibrant" onchange="setColors(this.value);">
                         <p id="vibrantColor">Vibrant</p>
                     </label>
-
-                        <label class="flex items-center text-white/80">
-                            <input type="radio" name="colorTheme" value="gameland" onchange="setColors(this.value);">
-                            <p id="gamelandColor">GAMELAND</p>
-                        </label>
                 </div>
             </div>
             <div id="chooseExploitChain" class="mb-4">
