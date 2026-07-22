@@ -351,12 +351,14 @@ async function loadSettings() {
     loadLastTab();
     loadGoldHENVer();
 
-    if (localStorage.getItem('cacheInstalled') === 'true') {
+    var cacheInstalled = localStorage.getItem('cacheInstalled') === 'true';
+    if (cacheInstalled) {
       localStorage.removeItem('cacheInstalled');
       autoJailbreak();
-    } else {
-      autoJailbreak();
+      return;
     }
+
+    autoJailbreak();
     updateBareboneJB();
     loadLapseChain();
     userlandOnlyOnJB67x();
@@ -364,6 +366,7 @@ async function loadSettings() {
     alert("Error in loadSettings: " + e.message);
   }
 }
+
 
 function getPayloadCategoryClass(category) {
   switch (category) {
