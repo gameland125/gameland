@@ -1,373 +1,146 @@
 /*
  * GAMELAND Luxury Pink Theme
- * Visual-only stylesheet
+ * Visual-only stylesheet for PS4 browser
  * Powered by Qassem Akbarzadeh
  */
-
 :root {
     --gl-pink: #ff3f9f;
     --gl-pink-light: #ff8bc7;
     --gl-pink-dark: #a9145d;
-    --gl-purple: #5d174b;
-    --gl-background: #09070b;
-    --gl-background-soft: #170d16;
-    --gl-panel: rgba(31, 17, 29, 0.94);
-    --gl-panel-light: rgba(64, 31, 57, 0.82);
-    --gl-border: rgba(255, 111, 184, 0.32);
+    --gl-bg: #09070b;
+    --gl-panel: rgba(31, 17, 29, .94);
+    --gl-border: rgba(255, 111, 184, .32);
     --gl-text: #fff7fc;
     --gl-muted: #d8bdcd;
 }
 
-/* Main background */
-
-html,
-body {
-    background-color: var(--gl-background) !important;
+html, body {
+    background-color: var(--gl-bg) !important;
     color: var(--gl-text) !important;
 }
 
 body {
     background-image:
-        radial-gradient(
-            circle at 15% 10%,
-            rgba(255, 63, 159, 0.20) 0,
-            transparent 32%
-        ),
-        radial-gradient(
-            circle at 90% 85%,
-            rgba(130, 31, 102, 0.18) 0,
-            transparent 30%
-        ),
-        linear-gradient(
-            145deg,
-            #080609 0%,
-            #170b16 52%,
-            #09070b 100%
-        ) !important;
+        radial-gradient(circle at 15% 10%, rgba(255,63,159,.20), transparent 32%),
+        radial-gradient(circle at 90% 85%, rgba(130,31,102,.18), transparent 30%),
+        linear-gradient(145deg, #080609 0%, #170b16 52%, #09070b 100%) !important;
     background-attachment: fixed !important;
 }
 
-/*
- * Keep existing screen structure intact.
- * Only visual background is changed.
- */
-
 #initial-screen,
-#exploit-main-screen {
-    background-color: transparent !important;
-}
+#exploit-main-screen { background-color: transparent !important; }
 
 #initial-screen.compact {
     background-color: #130b12 !important;
-    background-image:
-        radial-gradient(
-            circle at 50% 25%,
-            rgba(255, 63, 159, 0.16),
-            transparent 42%
-        ) !important;
+    background-image: radial-gradient(circle at 50% 25%, rgba(255,63,159,.16), transparent 42%) !important;
 }
-
-/* PlayStation/Gameland logo */
 
 #ps-logo {
     fill: var(--gl-pink) !important;
-    filter: drop-shadow(0 0 12px rgba(255, 63, 159, 0.45));
+    filter: drop-shadow(0 0 12px rgba(255,63,159,.45));
 }
 
-#ps-logo-container,
-#pslogo {
-    color: var(--gl-pink-light) !important;
-}
+#ps-logo-container, #pslogo { color: var(--gl-pink-light) !important; }
 
-/* Main titles */
-
-h1,
-h2,
-h3,
-h4,
-.font-bold,
-.font-semibold {
+h1, h2, h3, h4, .font-bold, .font-semibold {
     color: var(--gl-text);
-    letter-spacing: 0.02em;
+    letter-spacing: .02em;
 }
 
 #click-to-start-text {
     color: var(--gl-text) !important;
     font-weight: 700 !important;
-    letter-spacing: 0.04em;
-    text-shadow:
-        0 2px 12px rgba(0, 0, 0, 0.75),
-        0 0 18px rgba(255, 63, 159, 0.30);
+    letter-spacing: .04em;
+    text-shadow: 0 2px 12px rgba(0,0,0,.75), 0 0 18px rgba(255,63,159,.30);
 }
 
-/* Tailwind background color overrides */
+.bg-gray-900 { background-color: rgba(9,7,11,.98) !important; }
+.bg-gray-800 { background-color: var(--gl-panel) !important; border-color: var(--gl-border) !important; }
+.bg-gray-700 { background-color: rgba(74,38,66,.84) !important; }
+.bg-gray-700\/60 { background-color: rgba(61,31,55,.76) !important; }
+.bg-black\/50 { background-color: rgba(7,4,7,.76) !important; }
+.bg-white\/5 { background-color: rgba(255,255,255,.055) !important; }
+.bg-white\/10 { background-color: rgba(255,255,255,.09) !important; }
+.bg-yellow-600\/20 { background-color: rgba(255,63,159,.14) !important; }
+.bg-blue-600 { background-color: var(--gl-pink-dark) !important; }
+.bg-red-600 { background-color: #b72162 !important; }
+.bg-red-700 { background-color: #8d174c !important; }
+.bg-gray-50 { background-color: #fff7fc !important; color: #25101e !important; }
 
-.bg-gray-900 {
-    background-color: rgba(9, 7, 11, 0.98) !important;
+.text-white { color: var(--gl-text) !important; }
+.text-white\/70 { color: rgba(255,240,249,.72) !important; }
+.text-white\/80 { color: rgba(255,240,249,.84) !important; }
+.text-gray-300, .text-gray-400 { color: var(--gl-muted) !important; }
+.text-blue-400, .text-blue-500 { color: var(--gl-pink-light) !important; }
+.text-yellow-400, .text-yellow-500 { color: #ffafd6 !important; }
+
+.rounded, .rounded-md, .rounded-lg, .rounded-xl, .rounded-2xl { border-color: var(--gl-border); }
+.shadow, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl {
+    box-shadow: 0 16px 44px rgba(0,0,0,.38), 0 0 0 1px rgba(255,104,181,.08) !important;
 }
 
-.bg-gray-800 {
-    background-color: var(--gl-panel) !important;
-    border-color: var(--gl-border) !important;
-}
-
-.bg-gray-700 {
-    background-color: rgba(74, 38, 66, 0.84) !important;
-}
-
-.bg-gray-700\/60 {
-    background-color: rgba(61, 31, 55, 0.76) !important;
-}
-
-.bg-black\/50 {
-    background-color: rgba(7, 4, 7, 0.76) !important;
-}
-
-.bg-white\/5 {
-    background-color: rgba(255, 255, 255, 0.055) !important;
-}
-
-.bg-white\/10 {
-    background-color: rgba(255, 255, 255, 0.09) !important;
-}
-
-.bg-yellow-600\/20 {
-    background-color: rgba(255, 63, 159, 0.14) !important;
-}
-
-.bg-blue-600 {
-    background-color: var(--gl-pink-dark) !important;
-}
-
-.bg-red-600 {
-    background-color: #b72162 !important;
-}
-
-.bg-red-700 {
-    background-color: #8d174c !important;
-}
-
-.bg-gray-50 {
-    background-color: #fff7fc !important;
-    color: #25101e !important;
-}
-
-/* Text color overrides */
-
-.text-white {
-    color: var(--gl-text) !important;
-}
-
-.text-white\/70 {
-    color: rgba(255, 240, 249, 0.72) !important;
-}
-
-.text-white\/80 {
-    color: rgba(255, 240, 249, 0.84) !important;
-}
-
-.text-gray-300,
-.text-gray-400 {
-    color: var(--gl-muted) !important;
-}
-
-.text-blue-400,
-.text-blue-500 {
-    color: var(--gl-pink-light) !important;
-}
-
-.text-yellow-400,
-.text-yellow-500 {
-    color: #ffafd6 !important;
-}
-
-/* Existing cards and panels */
-
-.rounded,
-.rounded-md,
-.rounded-lg,
-.rounded-xl,
-.rounded-2xl {
-    border-color: var(--gl-border);
-}
-
-.shadow,
-.shadow-md,
-.shadow-lg,
-.shadow-xl,
-.shadow-2xl {
-    box-shadow:
-        0 16px 44px rgba(0, 0, 0, 0.38),
-        0 0 0 1px rgba(255, 104, 181, 0.08) !important;
-}
-
-/* Category cards */
-
-.category-tools,
-.category-advanced,
-.category-linux {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(52, 26, 47, 0.95),
-            rgba(20, 12, 19, 0.96)
-        ) !important;
+.category-tools, .category-advanced, .category-linux {
+    background: linear-gradient(145deg, rgba(52,26,47,.95), rgba(20,12,19,.96)) !important;
     border: 1px solid var(--gl-border) !important;
-    box-shadow:
-        0 14px 35px rgba(0, 0, 0, 0.30),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+    box-shadow: 0 14px 35px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.04) !important;
 }
 
-/* Buttons */
-
-button,
-[role="button"] {
-    -webkit-tap-highlight-color: transparent;
-}
-
-button:not(:disabled) {
-    border-color: rgba(255, 111, 184, 0.30);
-}
-
-button:hover,
-[role="button"]:hover {
-    border-color: rgba(255, 139, 199, 0.55);
-}
-
-button:focus,
-input:focus,
-select:focus {
-    outline: 2px solid rgba(255, 63, 159, 0.44) !important;
+button, [role="button"] { -webkit-tap-highlight-color: transparent; }
+button:not(:disabled) { border-color: rgba(255,111,184,.30); }
+button:hover, [role="button"]:hover { border-color: rgba(255,139,199,.55); }
+button:focus, input:focus, select:focus {
+    outline: 2px solid rgba(255,63,159,.44) !important;
     outline-offset: 2px;
 }
 
-/* Firmware selection */
-
 .fwSelected {
-    background:
-        linear-gradient(
-            135deg,
-            var(--gl-pink-dark),
-            var(--gl-pink)
-        ) !important;
-    color: #ffffff !important;
-    border-color: rgba(255, 190, 224, 0.58) !important;
-    box-shadow:
-        0 8px 22px rgba(255, 32, 142, 0.28),
-        inset 0 1px 0 rgba(255, 255, 255, 0.20) !important;
+    background: linear-gradient(135deg, var(--gl-pink-dark), var(--gl-pink)) !important;
+    color: #fff !important;
+    border-color: rgba(255,190,224,.58) !important;
+    box-shadow: 0 8px 22px rgba(255,32,142,.28), inset 0 1px 0 rgba(255,255,255,.20) !important;
 }
-
-/* Radio buttons */
 
 input[type="radio"] {
-    border: 2px solid rgba(255, 151, 205, 0.55) !important;
-    background-color: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255,151,205,.55) !important;
+    background-color: rgba(255,255,255,.05);
 }
-
 input[type="radio"]:checked {
     background: var(--gl-pink) !important;
     border-color: var(--gl-pink-light) !important;
-    box-shadow:
-        0 0 0 3px rgba(255, 63, 159, 0.16),
-        0 0 12px rgba(255, 63, 159, 0.35) !important;
+    box-shadow: 0 0 0 3px rgba(255,63,159,.16), 0 0 12px rgba(255,63,159,.35) !important;
 }
 
-/* Inputs and select boxes */
-
-input,
-select,
-textarea {
+input, select, textarea {
     color: var(--gl-text);
-    background-color: rgba(27, 15, 26, 0.92);
+    background-color: rgba(27,15,26,.92);
     border-color: var(--gl-border);
 }
+select option { color: #fff; background-color: #1b0f1a; }
+.border-gray-600, .border-gray-700, .border-white\/10 { border-color: var(--gl-border) !important; }
+hr { border-color: rgba(255,111,184,.20) !important; }
 
-select option {
-    color: #ffffff;
-    background-color: #1b0f1a;
-}
-
-/* Lines and borders */
-
-.border-gray-600,
-.border-gray-700,
-.border-white\/10 {
-    border-color: var(--gl-border) !important;
-}
-
-hr {
-    border-color: rgba(255, 111, 184, 0.20) !important;
-}
-
-/* Modal appearance */
-
-.fixed .bg-gray-800,
-.fixed .bg-gray-900 {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(39, 20, 35, 0.99),
-            rgba(13, 8, 13, 0.99)
-        ) !important;
+.fixed .bg-gray-800, .fixed .bg-gray-900 {
+    background: linear-gradient(145deg, rgba(39,20,35,.99), rgba(13,8,13,.99)) !important;
     border: 1px solid var(--gl-border) !important;
-    box-shadow:
-        0 24px 70px rgba(0, 0, 0, 0.60),
-        0 0 30px rgba(255, 63, 159, 0.10) !important;
+    box-shadow: 0 24px 70px rgba(0,0,0,.60), 0 0 30px rgba(255,63,159,.10) !important;
 }
 
-/* Scrollbar */
-
-::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(9, 7, 11, 0.92);
-}
-
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: rgba(9,7,11,.92); }
 ::-webkit-scrollbar-thumb {
-    background:
-        linear-gradient(
-            180deg,
-            var(--gl-pink),
-            var(--gl-pink-dark)
-        );
+    background: linear-gradient(180deg, var(--gl-pink), var(--gl-pink-dark));
     border-radius: 10px;
 }
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--gl-pink-light);
-}
-
-/* Selection */
-
-::selection {
-    color: #ffffff;
-    background: var(--gl-pink-dark);
-}
-
-/* Small screens and PS4 browser */
+::-webkit-scrollbar-thumb:hover { background: var(--gl-pink-light); }
+::selection { color: #fff; background: var(--gl-pink-dark); }
 
 @media screen and (max-width: 800px) {
     body {
         background-image:
-            radial-gradient(
-                circle at 50% 12%,
-                rgba(255, 63, 159, 0.16),
-                transparent 35%
-            ),
-            linear-gradient(
-                145deg,
-                #080609 0%,
-                #170b16 55%,
-                #09070b 100%
-            ) !important;
+            radial-gradient(circle at 50% 12%, rgba(255,63,159,.16), transparent 35%),
+            linear-gradient(145deg, #080609 0%, #170b16 55%, #09070b 100%) !important;
     }
-
-    .shadow-lg,
-    .shadow-xl,
-    .shadow-2xl {
-        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34) !important;
+    .shadow-lg, .shadow-xl, .shadow-2xl {
+        box-shadow: 0 10px 26px rgba(0,0,0,.34) !important;
     }
-                         }
+}
