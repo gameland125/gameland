@@ -32,7 +32,7 @@ function autoJailbreak() {
 
 // localStorage retry value true but no sessionStorage value? use timer.
 function autoJailbreakTimer() {
-    var timer = 3; // Start a longer countdown immediately
+    var timer = 9; // Start a longer countdown immediately
     ui.stopAutoJbBtn.classList.toggle('hidden');
     autoJbInterval = setInterval(() => {
 
