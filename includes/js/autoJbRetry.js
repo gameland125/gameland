@@ -18,24 +18,16 @@ function autoJailbreak() {
         jailbreak();
         return;
     }
-
-    var checked = (localStorage.getItem('autoJbRetry') || 'true') === 'true';
+    var checked = (localStorage.getItem('autoJbRetry') || 'true') === 'true'; // default to true if not set
     var sessionChecked = sessionStorage.getItem('autoJbRetry') == 'true';
-
     ui.autoJbRetry.checked = checked;
-
     // check if supported ps4
     if (window.ps4Fw < 6.70 || window.ps4Fw > 9.60 || !window.ps4Fw) return;
 
-    // If cache was just installed, start immediately
-    if (localStorage.getItem('cacheInstalled') === 'true') {
+    // If cache installation completed or auto jailbreak is enabled for this session, start directly.
+    if (cacheInstalled || (checked && sessionChecked)) {
         localStorage.removeItem('cacheInstalled');
         jailbreak();
-        return;
-        autoJailbreak();
-    // Normal retry flow
-    if (checked && sessionChecked) {
-        autoJailbreakTimer();
     }
 }
 
@@ -49,7 +41,6 @@ function autoJailbreakTimer() {
         ui.clickToStartText.style.fontSize = "15px";
         if (timer <= 0) {
             clearInterval(autoJbInterval);
-            autoJbInterval = null;
             jailbreak();
         }
         timer--;

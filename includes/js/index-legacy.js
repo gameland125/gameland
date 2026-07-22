@@ -507,9 +507,10 @@ function _loadSettings() {
           loadLastTab();
           loadGoldHENVer();
 
-          // اجرای خودکار جیلبریک دقیقاً پس از نصب موفق کش آفلاین
-          if (sessionStorage.getItem('cacheInstalled') === 'true') {
-            sessionStorage.removeItem('cacheInstalled');
+          if (localStorage.getItem('cacheInstalled') === 'true') {
+            localStorage.removeItem('cacheInstalled');
+            autoJailbreak();
+          } else {
             autoJailbreak();
           }
           updateBareboneJB();

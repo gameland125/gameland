@@ -251,8 +251,8 @@ async function badHoistJailbreak() {
 }
 
 function jailbreakSuccess() {
-  if (localStorage.getItem('jailbreakNow') == "true" && user.ps4Fw >= 6.70 && user.ps4Fw <= 6.72) {
-    localStorage.removeItem('jailbreakNow');
+  if (sessionStorage.getItem('jailbreakNow') == "true" && user.ps4Fw >= 6.70 && user.ps4Fw <= 6.72) {
+    sessionStorage.removeItem('jailbreakNow');
     localStorage.setItem("userlandOnlyOnJB67x", "false");
   }
   sessionStorage.setItem('autoJbRetry', 'false');
@@ -347,17 +347,17 @@ async function loadSettings() {
     loadTheme();
     loadColor();
     renderPayloads(payloadsList);
-        loadLastTab();
+    loadAdvancedPayloads();
+    loadLastTab();
     loadGoldHENVer();
 
-    // اجرای خودکار جیلبریک دقیقاً پس از نصب موفق کش آفلاین
-    if (sessionStorage.getItem('cacheInstalled') === 'true') {
-        sessionStorage.removeItem('cacheInstalled');
-        autoJailbreak();
+    if (localStorage.getItem('cacheInstalled') === 'true') {
+      localStorage.removeItem('cacheInstalled');
+      autoJailbreak();
+    } else {
+      autoJailbreak();
     }
-
     updateBareboneJB();
-    
     loadLapseChain();
     userlandOnlyOnJB67x();
   } catch (e) {
