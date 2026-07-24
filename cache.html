@@ -38,6 +38,7 @@
     <script>
     (function () {
         var redirectStarted = false;
+        var appCache;
 
         function setMessage(message) {
             var element = document.getElementById('msgs');
@@ -100,48 +101,42 @@
             setMessage('Offline cache installation failed');
         }
 
-        window.addEventListener('load', function () {
-            var appCache;
+        if (!window.applicationCache) {
+            setMessage('Application cache is not supported');
+            return;
+        }
 
-            if (!window.applicationCache) {
-                setMessage(
-                    'Application cache is not supported'
-                );
-                return;
-            }
+        appCache = window.applicationCache;
 
-            appCache = window.applicationCache;
+        appCache.addEventListener(
+            'progress',
+            onProgress,
+            false
+        );
 
-            appCache.addEventListener(
-                'progress',
-                onProgress,
-                false
-            );
+        appCache.addEventListener(
+            'cached',
+            onInstalled,
+            false
+        );
 
-            appCache.addEventListener(
-                'cached',
-                onInstalled,
-                false
-            );
+        appCache.addEventListener(
+            'updateready',
+            onInstalled,
+            false
+        );
 
-            appCache.addEventListener(
-                'updateready',
-                onInstalled,
-                false
-            );
+        appCache.addEventListener(
+            'noupdate',
+            markAndGoToIndex,
+            false
+        );
 
-            appCache.addEventListener(
-                'noupdate',
-                markAndGoToIndex,
-                false
-            );
-
-            appCache.addEventListener(
-                'error',
-                onError,
-                false
-            );
-        }, false);
+        appCache.addEventListener(
+            'error',
+            onError,
+            false
+        );
     }());
     </script>
 </body>
