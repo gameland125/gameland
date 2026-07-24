@@ -618,67 +618,30 @@
     <script src="./includes/js/HENs.js"></script>
     <script src="./includes/js/checkFw.js"></script>
     <script src="./includes/js/autoJbRetry.js"></script>
-        <!-- کدهای قبلی پروژه ... -->
-    
     <script src="./includes/js/events.js"></script>
-    
-    <!-- شروع اسکریپت پچ خودکار گیم‌لند -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // بررسی وجود پرچم AutoStart در localStorage
-            if (localStorage.getItem('gamelandAutoGoldHEN') === 'true') {
-                // پاک کردن پرچم برای جلوگیری از لوپ بی‌نهایت در دفعات بعدی بارگذاری
-                localStorage.removeItem('gamelandAutoGoldHEN');
-                
-                var statusText = document.getElementById('exploitRun');
-                if (statusText) {
-                    statusText.innerHTML = "شروع خودکار اکسپلویت...";
+        (function () {
+            function autoStartGoldHEN() {
+                try {
+                    if (!localStorage.getItem('gamelandAutoGoldHEN')) return;
+                    localStorage.removeItem('gamelandAutoGoldHEN');
+                    var btn = document.getElementById('exploitRun');
+                    if (btn) btn.click();
+                } catch (e) {
+                    console.error('Auto-start hook failed: ' + e.message);
                 }
-
-                // تاخیر ۵۰۰ میلی ثانیه‌ای برای بارگذاری پایدار تمام توابع در مرورگر PS4
-                setTimeout(function() {
-                    var runBtn = document.getElementById('exploitRun');
-                    if (runBtn) {
-                        runBtn.click();
-                    }
-                }, 500);
             }
-        });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    setTimeout(autoStartGoldHEN, 300);
+                }, { once: true });
+            } else {
+                setTimeout(autoStartGoldHEN, 300);
+            }
+        })();
     </script>
+
 </body>
+
 </html>
-<script src="./includes/js/events.js"></script>
-<script>
-(function () {
-    function triggerAutoStart() {
-        try {
-            if (localStorage.getItem('gamelandAutoGoldHEN') !== '1') {
-                return;
-            }
-
-            localStorage.removeItem('gamelandAutoGoldHEN');
-
-            setTimeout(function () {
-                var button = document.getElementById('exploitRun');
-                if (button) {
-                    button.click();
-                }
-            }, 500);
-        } catch (e) {
-            console.log('AutoStart error:', e);
-        }
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', triggerAutoStart);
-    } else {
-        triggerAutoStart();
-    }
-}());
-</script>
-</body>
-</html>
-
-})();
-</script>
-

@@ -1,143 +1,69 @@
-<!DOCTYPE html>
-<html manifest="PSFree.manifest">
+<!doctype html>
+<html lang="fa" manifest="PSFree.manifest">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAMELAND Offline Cache</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offline Cache Installer</title>
+<style>
+body {
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    text-align: center;
+    margin: 0;
+    overflow: hidden;
+}
+.info {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: sans-serif;
+    white-space: nowrap;
+}
+</style>
+<script>
+(function () {
+    function setMessage(message) {
+        var element = document.getElementById('msgs');
+        if (element) element.textContent = message;
+    }
 
-    <style>
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
+    function onProgress(event) {
+        var percent = event.total ? Math.round(event.loaded / event.total * 100) : 0;
+        setMessage('Installing Offline Cache ... ' + percent + '%');
+    }
 
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #202020;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
+    function goToIndex() {
+        location.replace('index.html');
+    }
 
-        #msgs {
-            padding: 24px;
-            font-size: 28px;
-            font-weight: bold;
-        }
-    </style>
-</head>
+    function onInstalled() {
+        setMessage('Cache Installed Successfully');
+        setTimeout(goToIndex, 1000);
+    }
 
-<body>
-    <div id="msgs">Preparing offline cache...</div>
+    function onError() {
+        setMessage('Offline cache installation failed');
+    }
 
-    <script>
-    (function () {
-        var redirectStarted = false;
-        var appCache;
-
-        function setMessage(message) {
-            var element = document.getElementById('msgs');
-
-            if (element) {
-                element.textContent = message;
-            }
-        }
-
-        function onProgress(event) {
-            var percent = 0;
-
-            if (event && event.total) {
-                percent = Math.round(
-                    (event.loaded / event.total) * 100
-                );
-            }
-
-            setMessage(
-                'Installing Offline Cache ... ' + percent + '%'
-            );
-        }
-
-        function markAndGoToIndex() {
-            if (redirectStarted) {
-                return;
-            }
-
-            redirectStarted = true;
-
-            try {
-                localStorage.setItem(
-                    'gamelandAutoGoldHEN',
-                    '1'
-                );
-            } catch (error) {
-                setMessage('Unable to save Auto-start setting');
-            }
-
-            location.replace('index.html');
-        }
-
-        function onInstalled() {
-            if (redirectStarted) {
-                return;
-            }
-
-            setMessage('Cache Installed Successfully');
-
-            setTimeout(function () {
-                markAndGoToIndex();
-            }, 1000);
-        }
-
-        function onError() {
-            if (redirectStarted) {
-                return;
-            }
-
-            setMessage('Offline cache installation failed');
-        }
-
+    window.addEventListener('load', function () {
         if (!window.applicationCache) {
             setMessage('Application cache is not supported');
             return;
         }
 
-        appCache = window.applicationCache;
-
-        appCache.addEventListener(
-            'progress',
-            onProgress,
-            false
-        );
-
-        appCache.addEventListener(
-            'cached',
-            onInstalled,
-            false
-        );
-
-        appCache.addEventListener(
-            'updateready',
-            onInstalled,
-            false
-        );
-
-        appCache.addEventListener(
-            'noupdate',
-            markAndGoToIndex,
-            false
-        );
-
-        appCache.addEventListener(
-            'error',
-            onError,
-            false
-        );
-    }());
-    </script>
+        var appCache = window.applicationCache;
+        appCache.addEventListener('progress', onProgress, false);
+        appCache.addEventListener('cached', onInstalled, false);
+        appCache.addEventListener('updateready', onInstalled, false);
+        appCache.addEventListener('noupdate', goToIndex, false);
+        appCache.addEventListener('error', onError, false);
+    }, false);
+}());
+</script>
+</head>
+<body>
+<div id="msgs" class="info">Preparing offline cache...</div>
 </body>
 </html>
