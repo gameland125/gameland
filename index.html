@@ -645,3 +645,99 @@
 </body>
 
 </html>
+<!doctype html>
+<html lang="fa" manifest="PSFree.manifest">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title>PSFree Enhanced</title>
+    <meta name="description" content="A feature rich PS4 exploit host"/>
+    <meta name="author" content="ArabPixel, Qassem Akbarzadeh"/>
+    <meta name="keywords" content="PS4, PlayStation 4, webkit exploit, jailbreak, psfree lapse, gameland"/>
+    <link rel="stylesheet" id="main-stylesheet" href="">
+    <link rel="stylesheet" id="color-stylesheet" href="">
+    <script>
+        // Prevent "Theme Flash" by applying the href before the body renders
+        var savedTheme = localStorage.getItem('theme') || "index";
+        var savedColor = localStorage.getItem('color') || "default";
+        if (savedTheme) {
+            document.getElementById('main-stylesheet').setAttribute('href', './includes/css/layouts/' + savedTheme + '.css');
+        }
+        if (savedColor){
+            document.getElementById('color-stylesheet').setAttribute('href', './includes/css/colors/' + savedColor + '.css');
+        }
+    </script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <header>
+            <div class="logo"></div>
+            <span id="title"></span>
+            <div class="menu-button"></div>
+        </header>
+
+        <main>
+            <div id="exploit-container">
+                <div id="exploit-title"></div>
+                <div id="exploit-desc"></div>
+                <button id="exploitRun" class="button primary run" disabled></button>
+            </div>
+            <div id="payload-container">
+                <div id="payload-title"></div>
+                <div id="payload-list"></div>
+            </div>
+            <div id="other-container">
+                <div id="other-title"></div>
+                <div id="other-list"></div>
+            </div>
+        </main>
+
+        <footer>
+            <span id="footer-left"></span>
+            <span id="footer-right"></span>
+        </footer>
+    </div>
+
+    <script src="./includes/js/language.js"></script>
+    <script src="./includes/js/design.js"></script>
+    <script src="./includes/js/events.js"></script>
+    <script src="./includes/js/HENs.js"></script>
+    <script src="./includes/js/payloadsList.js"></script>
+    <script src="./includes/js/autoJbRetry.js"></script>
+    <script src="./includes/js/checkFw.js"></script>
+    <script src="./includes/js/exploits/bundle.js"></script>
+    <script src="./includes/js/index-legacy.js"></script>
+    
+    <!-- Global Error Tracker -->
+    <script>
+        window.onerror = function (msg, url, linenumber) {
+            alert('Error message: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber);
+            return true;
+        }
+
+        var ua = navigator.userAgent;
+        var isPS4 = ua.indexOf("PlayStation 4") !== -1;
+        var is67x = ((ua.indexOf(" 6.70") !== -1)  (ua.indexOf(" 6.71") !== -1)  (ua.indexOf(" 6.72") !== -1));
+        window.entrypoint672_result = 0;
+        window.exploitsetup672_result = 0;
+
+        var userlandOnlyOnJB67x = localStorage.getItem("userlandOnlyOnJB67x") == "true";
+        // Load 6.7x entrypoint if needed conditionally
+        if (isPS4 && is67x && !userlandOnlyOnJB67x) {
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'includes/js/exploits/672entrypoint.js', false);
+                xhr.send('');
+                if (xhr.status === 200) {
+                    eval.call(top.window, xhr.responseText);
+                }
+            } catch (e) {
+                // Safe non-breaking fallbacks if DOM isn't ready
+                console.error("Early entrypoint hook failed: " + e.message);
+            }
+        }
+
+        // Cache
+        document.addEventListener('DOMContentLoaded', () => {
